@@ -1,35 +1,26 @@
-# music-library-vue
+# Music Library
 
-This template should help get you started developing with Vue 3 in Vite.
+Library to register all records (CD, Vynil or other formats) that the user owns or want to buy.
 
-## Recommended IDE Setup
+## TO DO
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+-   Multiselect album genre
 
-## Customize configuration
+## KNOWN BUGS
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+-   Duplicated albums can be added
+-   Second fieldset of new album modal is cleared when "NO" is selected as an option in the "Do you own a copy?" input
+-   When applying filter with no coincidences message of collection with no albums in it appears. Change to correct message
+-   Clicking outside options modal to close it triggers other click events
 
-## Project Setup
+## IMPROVEMENTS AND OPTIMIZATIONS
 
-```sh
-npm install
-```
+-   Group all modals as a HOC with similar behaviour (e.g. close when clicking outside modal)
+-   Create placeholder image when no album jacket is provided or found
+-   Remove "record info" entries from "extra-info" panel and/or those that are not provided (or leave as NA)
+-   Translate record formats (vynil, etc) and country (?) fields
+-   Split table by title/artist/release_year (a,b,c,... or by number of entries 1--50, 50--100,...) to improve rendering when sorting
 
-### Compile and Hot-Reload for Development
+## POSSIBLE FUTURE ADDITIONS
 
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+-   Multiple filters (in column headers or as "tag" system)
