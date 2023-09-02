@@ -1,10 +1,14 @@
 /*jshint esversion: 6 */
 
 async function fetchRelease(release_id) {
-  const response = await fetch(`https://api.discogs.com/releases/${release_id}`)
-  const json = await response.json()
+  try {
+    const response = await fetch(`https://api.discogs.com/releases/${release_id}`)
+    const json = await response.json()
 
-  return parseAlbum(json)
+    return parseAlbum(json)
+  } catch (e) {
+    return null
+  }
 }
 
 function parseAlbum(json) {
@@ -21,7 +25,7 @@ function parseAlbum(json) {
     catalog_num: labels[0].catno,
     edition: year,
     country,
-    record_label: labels[0].name
+    label: labels[0].name
     // jacket,
   }
 }

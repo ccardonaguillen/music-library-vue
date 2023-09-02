@@ -1,10 +1,10 @@
 /*jshint esversion: 11 */
 
-import { markRaw } from 'vue'
 import { defineStore } from 'pinia'
 import {
   getFirestore,
   collection,
+  doc,
   getDocs,
   addDoc,
   deleteDoc,
@@ -54,14 +54,15 @@ export const useLibraryStore = defineStore('library', {
       }
     },
 
-    async removeAlbum(id) {
-      await deleteDoc(this.libraryRef.doc(id))
+    async removeAlbum(albumId) {
+      const albumRef = doc(getFirestore(), useUserStore().id, albumId)
+      await deleteDoc(albumRef)
       await this.fetchLibrary()
       useSnackbarStore().displaySuccessMessage('Album removed successfully')
     },
 
-    async editAlbum(id, albumInfo) {
-      const albumRef = this.libraryRef.doc(id)
+    async editAlbum(albumId, albumInfo) {
+      const albumRef = doc(getFirestore(), useUserStore().id, albumId)
       await updateDoc(albumRef, albumInfo)
       await this.fetchLibrary()
       useSnackbarStore().displaySuccessMessage('Album edited successfully')
