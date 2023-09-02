@@ -1,6 +1,6 @@
 /*jshint esversion: 11 */
 
-// import { ref, computed } from 'vue'
+import { markRaw } from 'vue'
 import { defineStore } from 'pinia'
 import {
   getFirestore,
@@ -14,6 +14,7 @@ import {
   getCountFromServer
 } from 'firebase/firestore'
 import { useUserStore } from '@/stores/user'
+import { useSnackbarStore } from '@/stores/snackbar'
 
 export const useLibraryStore = defineStore('library', {
   state: () => ({
@@ -22,13 +23,13 @@ export const useLibraryStore = defineStore('library', {
 
   getters: {
     libraryRef: () => {
-      const user = useUserStore()
-      return collection(getFirestore(), user.id)
+      return collection(getFirestore(), useUserStore().id)
     }
   },
 
   actions: {
     async fetchLibrary() {
+      this.clearLibrary()
       const q = await getDocs(this.libraryRef)
       q.forEach((doc) => {
         this.albums.push({ id: doc.id, ...doc.data() })
@@ -44,23 +45,26 @@ export const useLibraryStore = defineStore('library', {
     async addAlbum(albumInfo) {
       const q = await this.findAlbum(albumInfo)
       const snapshot = await getCountFromServer(q)
-      if (snapshot.data().count)
-        console.log('duplicated') //TODO : Add 'duplicated' message to snackbar
-      else {
+      if (snapshot.data().count) {
+        useSnackbarStore().displayErrorMessage('This album already exists in the library')
+      } else {
         await addDoc(this.libraryRef, albumInfo)
-        // TODO: Add 'album added' message to snackbar
+        await this.fetchLibrary()
+        useSnackbarStore().displaySuccessMessage('Album added successfully')
       }
     },
 
     async removeAlbum(id) {
       await deleteDoc(this.libraryRef.doc(id))
-      // TODO: Add 'album deleted' message to snackbar
+      await this.fetchLibrary()
+      useSnackbarStore().displaySuccessMessage('Album removed successfully')
     },
 
     async editAlbum(id, albumInfo) {
       const albumRef = this.libraryRef.doc(id)
       await updateDoc(albumRef, albumInfo)
-      // TODO: Add 'album edited' message to snackbar
+      await this.fetchLibrary()
+      useSnackbarStore().displaySuccessMessage('Album edited successfully')
     },
 
     async findAlbum({ title, artist, released }) {
