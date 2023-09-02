@@ -3,8 +3,21 @@
   <router-view></router-view>
 </template>
 
-<script setup>
+<script>
 import PageHeader from '@/components/PageHeader.vue'
+import { mapActions } from 'pinia'
+import { useUserStore } from '@/stores/user'
+
+export default {
+  name: 'App',
+  components: { PageHeader },
+  methods: {
+    ...mapActions(useUserStore, ['initFirebaseAuth'])
+  },
+  created() {
+    this.initFirebaseAuth()
+  }
+}
 </script>
 
 <style scoped></style>

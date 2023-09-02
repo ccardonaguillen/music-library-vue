@@ -13,8 +13,16 @@
               <v-btn> Español</v-btn>
             </div>
             <div class="d-flex align-center">
-              <p>Sign in with Google</p>
-              <v-icon icon="mdi-account-circle" size="45" />
+              <template v-if="isUserSignedIn">
+                <v-btn variant="text" @click="signOutUser"> Sign out </v-btn>
+                <v-avatar>
+                  <v-img :src="profilePicture"></v-img>
+                </v-avatar>
+              </template>
+              <template v-else>
+                <v-btn variant="text" @click="signIn"> Sign in with Google </v-btn>
+                <v-icon icon="mdi-account-circle" size="45" />
+              </template>
             </div>
           </v-row>
         </v-col>
@@ -23,10 +31,19 @@
   </header>
 </template>
 
-<script setup>
-// import { useUserStore } from '@/stores/user'
-//
-// const user = useUserStore()
+<script>
+import { mapActions, mapState } from 'pinia'
+import { useUserStore } from '@/stores/user'
+
+export default {
+  name: 'PageHeader',
+  computed: {
+    ...mapState(useUserStore, ['id', 'username', 'profilePicture', 'isUserSignedIn'])
+  },
+  methods: {
+    ...mapActions(useUserStore, ['signIn', 'signOutUser'])
+  }
+}
 </script>
 
 <style scoped></style>
