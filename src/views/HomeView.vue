@@ -27,8 +27,7 @@ export default {
   },
   methods: {
     buttonClicked() {
-      console.log('click')
-      showModal.value = true
+      this.showModal = true
     }
   }
 }
