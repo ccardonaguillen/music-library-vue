@@ -22,21 +22,18 @@
     />
     <v-btn variant="outlined">Apply filter</v-btn>
     <v-spacer />
-    <v-btn
-      size="large"
-      prepend-icon="mdi-plus"
-      color="primary"
-      @click="$emit('newAlbumBtnClicked')"
-    >
+    <v-btn size="large" prepend-icon="mdi-plus" color="primary" @click="openModal">
       New Album
     </v-btn>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'pinia'
+import { useModalStore } from '@/stores/modal'
+
 export default {
   name: 'AlbumFilter',
-  emits: ['newAlbumBtnClicked'],
   data() {
     return {
       selectedOption: null,
@@ -51,6 +48,9 @@ export default {
         { name: 'owned', label: 'Owned', placeholder: '"true", "no", "not owned"' }
       ]
     }
+  },
+  methods: {
+    ...mapActions(useModalStore, ['openModal'])
   },
   mounted() {
     this.selectedOption = this.filterOptions[0]

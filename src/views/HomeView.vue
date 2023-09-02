@@ -3,13 +3,13 @@
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="7">
-          <album-filter @newAlbumBtnClicked="buttonClicked" />
+          <album-filter />
           <album-table />
         </v-col>
       </v-row>
     </v-container>
   </main>
-  <album-modal v-model="showModal" />
+  <album-modal />
 </template>
 
 <script>
@@ -21,14 +21,8 @@ export default {
   name: 'HomeView',
   components: { AlbumModal, AlbumFilter, AlbumTable },
   data() {
-    return {
-      showModal: false
-    }
+    return {}
   },
-  methods: {
-    buttonClicked() {
-      this.showModal = true
-    }
-  }
+  methods: {}
 }
 </script>
