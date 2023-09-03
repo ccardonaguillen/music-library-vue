@@ -7,6 +7,7 @@ import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 import { createVuetify } from 'vuetify'
 import { VDataTable } from 'vuetify/labs/VDataTable'
+import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
@@ -18,7 +19,8 @@ const app = createApp(App)
 const vuetify = createVuetify({
   components: {
     ...components,
-    VDataTable
+    VDataTable,
+    VDataTableServer
   },
   directives,
   icons: {

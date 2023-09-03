@@ -1,5 +1,16 @@
 <template>
-  <v-data-table hover :headers="headers" :items="albums" class="table-striped">
+  <v-data-table-server
+    v-model:page="page"
+    v-model:items-per-page="pageSize"
+    v-model:sort-by="sortBy"
+    hover
+    :headers="headers"
+    :items="albums"
+    :items-length="albumCount"
+    :loading="isFetching"
+    class="table-striped"
+    @update:options="fetchLibrary"
+  >
     <template v-slot:no-data>
       <span>
         There are currently no albums in your music library. Upload a collection from your computer
@@ -28,20 +39,12 @@
       </v-menu>
     </template>
     <template v-slot:[`item.owned`]="{ item }">
-      <v-btn
-        variant="flat"
-        density="compact"
-        :icon="item.columns.owned ? 'mdi-check' : 'mdi-close'"
-      />
+      <v-icon :icon="item.columns.owned ? 'mdi-check' : 'mdi-close'" />
     </template>
     <template v-slot:[`item.favorite`]="{ item }">
-      <v-btn
-        variant="flat"
-        density="compact"
-        :icon="item.columns.favorite ? 'mdi-star' : 'mdi-star-outline'"
-      />
+      <v-icon :icon="item.columns.favorite ? 'mdi-star' : 'mdi-star-outline'" />
     </template>
-  </v-data-table>
+  </v-data-table-server>
 </template>
 
 <script>
@@ -65,7 +68,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(useLibraryStore, ['albums']),
+    ...mapState(useLibraryStore, ['albums', 'albumCount', 'isFetching']),
+    ...mapWritableState(useLibraryStore, ['page', 'pageSize', 'sortBy']),
     ...mapWritableState(useModalStore, ['album'])
   },
   methods: {
@@ -73,7 +77,7 @@ export default {
     ...mapActions(useModalStore, ['openModal']),
 
     editAlbum(index) {
-      this.album = this.albums[index]
+      this.album = { ...this.albums[index] }
       this.openModal()
     }
   }
