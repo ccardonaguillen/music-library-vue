@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="620" v-model="showModal">
+  <v-dialog max-width="620" :model-value="showModal" @update:model-value="onShowModalChanged">
     <v-card class="d-flex flex-column px-9 py-8">
       <v-btn
         variant="flat"
@@ -8,7 +8,7 @@
         class="close-btn"
         @click="closeModal"
       />
-      <h2>New Album</h2>
+      <h2>{{ isEditing ? 'Edit Album' : 'New Album' }}</h2>
       <p>Input the album info manually or load it from Discogs</p>
       <v-text-field
         v-model="discogsId"
@@ -65,15 +65,15 @@
               <div>
                 <label>Do you own a copy?</label>
                 <v-radio-group v-model="album.owned" inline hide-details class="mt-1">
-                  <v-radio density="comfortable" label="Yes" class="mr-2" />
-                  <v-radio density="comfortable" label="No" />
+                  <v-radio density="comfortable" label="Yes" class="mr-2" :value="true" />
+                  <v-radio density="comfortable" label="No" :value="false" />
                 </v-radio-group>
               </div>
               <div>
                 <label>Mark as favorite?</label>
                 <v-radio-group v-model="album.favorite" inline hide-details class="mt-1">
-                  <v-radio density="comfortable" label="Yes" class="mr-2" />
-                  <v-radio density="comfortable" label="No" />
+                  <v-radio density="comfortable" label="Yes" class="mr-2" :value="true" />
+                  <v-radio density="comfortable" label="No" :value="false" />
                 </v-radio-group>
               </div>
             </v-row>
@@ -141,6 +141,7 @@
                     v-model="album.record_format"
                     density="compact"
                     label="Vinyl"
+                    value="vinyl"
                     hide-details
                   />
                 </v-col>
@@ -149,6 +150,7 @@
                     v-model="album.record_format"
                     density="compact"
                     label="CD"
+                    value="cd"
                     hide-details
                   />
                 </v-col>
@@ -157,6 +159,7 @@
                     v-model="album.record_format"
                     density="compact"
                     label="Cassette"
+                    value="cassette"
                     hide-details
                   />
                 </v-col>
@@ -165,6 +168,7 @@
                     v-model="album.record_format"
                     density="compact"
                     label="Other"
+                    value="other"
                     hide-details
                   />
                 </v-col>
@@ -177,13 +181,13 @@
               <v-container class="px-3">
                 <v-row no-gutters justify="start">
                   <v-col cols="5">
-                    <v-radio label="EP (Extended Play)" />
+                    <v-radio label="EP (Extended Play)" value="ep" />
                   </v-col>
                   <v-col cols="4">
-                    <v-radio label="LP (Long Play)" />
+                    <v-radio label="LP (Long Play)" value="lp" />
                   </v-col>
                   <v-col cols="3">
-                    <v-radio label="Single" />
+                    <v-radio label="Single" value="single" />
                   </v-col>
                 </v-row>
               </v-container>
@@ -248,7 +252,7 @@
               <v-col>
                 <label>Disks</label>
                 <v-text-field
-                  v-model="album.ndisks"
+                  v-model="album.nDisks"
                   variant="outlined"
                   density="compact"
                   placeholder=">1"
@@ -289,26 +293,34 @@ export default {
     }
   },
   computed: {
+    ...mapState(useModalStore, {
+      album: 'album',
+      showModal: 'show'
+    }),
+
     isEditing() {
       return !!this.album.id
-    },
-
-    ...mapState(useModalStore, {
-      showModal: 'show',
-      album: 'album'
-    })
+    }
   },
   methods: {
     ...mapActions(useLibraryStore, ['addAlbum', 'editAlbum']),
-
     ...mapActions(useModalStore, ['closeModal']),
+
+    onShowModalChanged(show) {
+      if (!show) this.closeModal()
+    },
 
     async fetchAlbum() {
       const album = await fetchRelease(this.discogsId)
       if (album) this.album = album
     },
+
     async submitAlbum() {
-      await this.addAlbum(this.album)
+      if (this.isEditing) {
+        const { id, ...albumInfo } = this.album
+        await this.onAlbumEdited(id, albumInfo)
+      } else await this.addAlbum(this.album)
+
       await this.closeModal()
     }
   }
