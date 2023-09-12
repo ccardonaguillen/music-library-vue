@@ -27,7 +27,7 @@
             <v-list-item
               prepend-icon="mdi-file-document-edit-outline"
               title="Edit Album"
-              @click="editAlbum(item.index)"
+              @click="onAlbumEdited(item.index)"
             />
             <v-list-item
               prepend-icon="mdi-file-document-remove-outline"
@@ -39,10 +39,18 @@
       </v-menu>
     </template>
     <template v-slot:[`item.owned`]="{ item }">
-      <v-icon :icon="item.columns.owned ? 'mdi-check' : 'mdi-close'" />
+      <v-icon
+        :icon="item.columns.owned ? 'mdi-check' : 'mdi-close'"
+        class="table-icon"
+        @click="editAlbum(item.value, { owned: !item.columns.owned })"
+      />
     </template>
     <template v-slot:[`item.favorite`]="{ item }">
-      <v-icon :icon="item.columns.favorite ? 'mdi-star' : 'mdi-star-outline'" />
+      <v-icon
+        :icon="item.columns.favorite ? 'mdi-star' : 'mdi-star-outline'"
+        class="table-icon"
+        @click="editAlbum(item.value, { favorite: !item.columns.favorite })"
+      />
     </template>
   </v-data-table-server>
 </template>
@@ -61,7 +69,7 @@ export default {
         { title: '', align: 'start', sortable: false, key: 'options', width: '0px' },
         { title: 'Title', align: 'start', sortable: true, key: 'title' },
         { title: 'Artist', align: 'start', sortable: true, key: 'artist' },
-        { title: 'Released', align: 'center', sortable: true, key: 'released' },
+        { title: 'Released', align: 'start', sortable: true, key: 'released' },
         { title: 'Owned', align: 'center', sortable: false, key: 'owned' },
         { title: 'Favourite', align: 'center', sortable: false, key: 'favorite' }
       ]
@@ -73,10 +81,10 @@ export default {
     ...mapWritableState(useModalStore, ['album'])
   },
   methods: {
-    ...mapActions(useLibraryStore, ['fetchLibrary', 'removeAlbum']),
+    ...mapActions(useLibraryStore, ['fetchLibrary', 'removeAlbum', 'editAlbum']),
     ...mapActions(useModalStore, ['openModal']),
 
-    editAlbum(index) {
+    onAlbumEdited(index) {
       this.album = { ...this.albums[index] }
       this.openModal()
     }
@@ -84,4 +92,9 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+i.table-icon:hover {
+  transform: scale(1.3);
+  transition: all 0.1s ease-in;
+}
+</style>
