@@ -1,7 +1,7 @@
 <template>
   <page-header />
   <router-view></router-view>
-  <v-snackbar v-model="show" :timeout="timeout" :color="color">
+  <v-snackbar :model-value="show" :timeout="timeout" :color="color">
     <pre class="text-subtitle-2">{{ message }}</pre>
   </v-snackbar>
 </template>
