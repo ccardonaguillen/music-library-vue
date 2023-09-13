@@ -67,11 +67,11 @@ export default {
     return {
       headers: [
         { title: '', align: 'start', sortable: false, key: 'options', width: '0px' },
-        { title: 'Title', align: 'start', sortable: true, key: 'title' },
-        { title: 'Artist', align: 'start', sortable: true, key: 'artist' },
-        { title: 'Released', align: 'start', sortable: true, key: 'released' },
-        { title: 'Owned', align: 'center', sortable: false, key: 'owned' },
-        { title: 'Favourite', align: 'center', sortable: false, key: 'favorite' }
+        { title: 'Title', align: 'start', sortable: true, key: 'title', width: '45%' },
+        { title: 'Artist', align: 'start', sortable: true, key: 'artist', width: '25%' },
+        { title: 'Released', align: 'start', sortable: true, key: 'released', width: '10%' },
+        { title: 'Owned', align: 'center', sortable: false, key: 'owned', width: '10%' },
+        { title: 'Favourite', align: 'center', sortable: false, key: 'favorite', width: '10%' }
       ]
     }
   },
