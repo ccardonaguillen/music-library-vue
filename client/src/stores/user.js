@@ -53,8 +53,11 @@ export const useUserStore = defineStore('user', {
         this.username = user?.displayName
         this.profilePicture = user?.photoURL
 
-        if (user) library.fetchLibrary()
-        else library.clearLibrary()
+        if (user) {
+          library.fetchLibrary()
+          library.fetchArtistList()
+          library.fetchAlbumCount()
+        } else library.clearLibrary()
       })
     }
   }
