@@ -23,9 +23,11 @@ import { useSnackbarStore } from '@/stores/snackbar'
 export const useLibraryStore = defineStore('library', {
   state: () => ({
     albums: [],
+    artists: [],
     page: 1,
     pageSize: 10,
-    sortBy: [{ key: 'artist', order: 'asc' }],
+    sortBy: [{ key: 'released', order: 'asc' }],
+    filters: { artist: [], released: [1950, 2000], owned: null, favorite: null },
     albumCount: 0,
     isFetching: false
   }),
@@ -33,22 +35,61 @@ export const useLibraryStore = defineStore('library', {
   getters: {
     libraryRef: () => {
       return collection(getFirestore(), useUserStore().id)
+    },
+
+    shownAlbumCount() {
+      return this.albums.length
     }
   },
 
   actions: {
+    async fetchAlbumCount() {
+      if (!useUserStore().id) return
+
+      const countSnapshot = await getCountFromServer(this.libraryRef)
+      this.albumCount = countSnapshot.data().count
+    },
+
+    async fetchArtistList() {
+      if (!useUserStore().id) return
+
+      this.artists = []
+
+      const querySnapshot = await getDocs(this.libraryRef)
+      querySnapshot.forEach((doc) => {
+        const artist = doc.data().artist
+        this.artists.push(artist)
+      })
+
+      this.artists = this.artists.sort((a, b) => a.localeCompare(b))
+    },
+
     async fetchLibrary() {
+      if (!useUserStore().id) return
+
       this.clearLibrary()
 
       this.isFetching = true
 
-      const countSnapshot = await getCountFromServer(this.libraryRef)
-      this.albumCount = countSnapshot.data().count
-
       const sortBy = this.sortBy.length ? this.sortBy : [{ key: 'title', order: 'asc' }]
       const sortOptions = sortBy.map((option) => orderBy(option.key, option.order))
+
+      let filterOptions = []
+
+      if (this.filters.released) {
+        filterOptions.push(where('released', '>=', this.filters.released[0]))
+        filterOptions.push(where('released', '<=', this.filters.released[1]))
+
+        // sortOptions.unshift(orderBy('released', 'asc'))
+      }
+
+      if (this.filters.artist.length) {
+        filterOptions.push(where('artist', 'in', this.filters.artist))
+      }
+
       const q = query(
         this.libraryRef,
+        ...filterOptions,
         ...sortOptions,
         sortBy[0].order === 'desc'
           ? endAt((this.page - 1) * this.pageSize)
@@ -79,6 +120,7 @@ export const useLibraryStore = defineStore('library', {
         useSnackbarStore().displayErrorMessage('This album already exists in the library')
       } else {
         await addDoc(this.libraryRef, albumInfo)
+        this.albumCount++
         await this.fetchLibrary()
         useSnackbarStore().displaySuccessMessage('Album added successfully')
       }
@@ -88,6 +130,7 @@ export const useLibraryStore = defineStore('library', {
       const albumRef = doc(getFirestore(), useUserStore().id, albumId)
       await deleteDoc(albumRef)
       await this.fetchLibrary()
+      this.albumCount--
       useSnackbarStore().displaySuccessMessage('Album removed successfully')
     },
 
