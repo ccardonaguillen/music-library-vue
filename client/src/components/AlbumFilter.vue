@@ -1,26 +1,47 @@
 <template>
-  <p>No albums in the library. Add one by clicking the button</p>
-  <div class="d-flex align-center" style="gap: 16px">
-    <div class="d-flex align-end" style="gap: 16px">
-      <label class="mb-1">Filter by</label>
-      <v-select
-        v-model="selectedOption"
-        :items="filterOptions"
-        item-title="label"
-        return-object
+  <p v-if="albumCount">{{ `Showing ${shownAlbumCount} out of ${albumCount} albums` }}</p>
+  <p v-else>No albums in the library. Add one by clicking the button</p>
+  <h3>Filters</h3>
+  <div class="d-flex align-end">
+    <div style="flex: 3">
+      <p class="pl-3">Artist</p>
+      <v-autocomplete
+        :items="artists"
+        v-model="filters.artist"
+        multiple
+        chips
         hide-details
         density="compact"
-        variant="underlined"
-        :menu-icon="null"
+        variant="outlined"
+        rounded
       />
     </div>
-    <v-text-field
-      hide-details
-      :placeholder="`e.g. ${selectedOption?.placeholder}`"
-      variant="outlined"
-      density="compact"
-    />
-    <v-btn variant="outlined">Apply filter</v-btn>
+    <v-divider vertical class="mx-4" />
+    <div style="flex: 2">
+      <p>Release year</p>
+      <v-range-slider
+        v-model="filters.released"
+        strict
+        min="1930"
+        max="2050"
+        step="1"
+        hide-details
+        :thumb-label="true"
+        style="height: 44px"
+        @update:model-value="refreshTable"
+      />
+
+      <!--      <div class="d-flex" style="gap: 8px">-->
+      <!--        <v-select hide-details density="compact" variant="outlined" rounded />-->
+      <!--        <v-select hide-details density="compact" variant="outlined" rounded />-->
+      <!--      </div>-->
+    </div>
+    <v-divider vertical class="mx-4" />
+
+    <v-btn variant="outlined" rounded text="Owned" />
+    <v-divider vertical class="mx-4" />
+
+    <v-btn variant="outlined" rounded text="Favorite" />
     <v-spacer />
     <v-btn size="large" prepend-icon="mdi-plus" color="primary" @click="openModal">
       New Album
@@ -29,8 +50,9 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
+import { mapActions, mapState, mapWritableState } from 'pinia'
 import { useModalStore } from '@/stores/modal'
+import { useLibraryStore } from '@/stores/library'
 
 export default {
   name: 'AlbumFilter',
@@ -46,11 +68,26 @@ export default {
           placeholder: '"1990", "1-2000", ">1900", "<1980"'
         },
         { name: 'owned', label: 'Owned', placeholder: '"true", "no", "not owned"' }
-      ]
+      ],
+      libraryTimeOut: null
     }
   },
+  computed: {
+    ...mapState(useLibraryStore, ['artists', 'albumCount', 'shownAlbumCount']),
+    ...mapWritableState(useLibraryStore, ['filters'])
+  },
+
   methods: {
-    ...mapActions(useModalStore, ['openModal'])
+    ...mapActions(useModalStore, ['openModal']),
+
+    ...mapActions(useLibraryStore, ['fetchLibrary']),
+
+    refreshTable() {
+      if (this.libraryTimeOut) clearTimeout(this.libraryTimeOut)
+      this.libraryTimeOut = setTimeout(() => {
+        this.fetchLibrary()
+      }, 1000)
+    }
   },
   mounted() {
     this.selectedOption = this.filterOptions[0]
