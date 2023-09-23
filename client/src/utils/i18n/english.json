@@ -9,7 +9,22 @@
     "owned": "Owned",
     "favorite": "Favorite",
     "genre": "Genre",
-    "genreOptions": {},
+    "genreOptions": {
+      "rock": "Rock",
+      "electronic": "Electronic",
+      "pop": "Pop",
+      "folk": "Folk, World, & Country",
+      "jazz": "Jazz",
+      "funk": "Funk / Soul",
+      "classical": "Classical",
+      "hipHop": "Hip Hop",
+      "latin": "Latin",
+      "stage": "Stage & Screen",
+      "reggae": "Reggae",
+      "nonMusic": "Non-Music",
+      "children": "Children's",
+      "military": "Brass & Military"
+    },
     "wikipedia": "Wikipedia Page",
     "discogs": "Discogs Link",
     "jacket": "Album Jacket",
@@ -37,11 +52,13 @@
   },
   "common": {
     "exampleAbbr": "e.g. ",
-    "yes": "Yes"
+    "all": "All",
+    "yes": "Yes",
+    "no": "No"
   },
   "alerts": {
     "added": {
-      "success": "Album added to library: {{title}}",
+      "success": "Album added to library: {title}",
       "duplicated": "Album already exists in the library",
       "error": "Error adding album to library"
     },
@@ -56,14 +73,8 @@
     }
   },
   "controls": {
-    "entries": {
-      "zero": "No albums in the library. Add one by clicking the button",
-      "other": "Showing {{displayed}} out of {{total}} albums"
-    },
-    "filter": {
-      "by": "Filter by",
-      "apply": "Apply filter"
-    },
+    "entries": "No albums in the library. Add one by clicking the button | Showing {displayed} out of {total} albums | Showing {displayed} out of {total} albums",
+    "filters": "Filters",
     "newAlbum": "New album"
   },
   "albumModal": {
@@ -90,6 +101,11 @@
       "reset": "Reset",
       "cancel": "Cancel",
       "close": "Close Modal"
+    },
+    "placeholders": {
+      "discogs": "Discogs release ID",
+      "genre": "Choose a genre",
+      "notes": "Here goes any other info related to the record"
     }
   },
   "optionsModal": {

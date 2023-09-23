@@ -8,11 +8,11 @@
         class="close-btn"
         @click="closeModal"
       />
-      <h2>{{ isEditing ? 'Edit Album' : 'New Album' }}</h2>
-      <p>Input the album info manually or load it from Discogs</p>
+      <h2>{{ $t(`albumModal.title.${isEditing ? 'edit' : 'new'}`) }}</h2>
+      <p>{{ $t('albumModal.hero') }}</p>
       <v-text-field
         v-model="discogsId"
-        label="Discogs release ID"
+        :label="$t('albumModal.placeholders.discogs')"
         append-inner-icon="mdi-cloud-search"
         variant="outlined"
         density="compact"
@@ -21,59 +21,69 @@
 
       <v-form>
         <fieldset class="px-5 py-4">
-          <legend class="px-1">General Info</legend>
+          <legend class="px-1">{{ $t('albumModal.fieldsets.general') }}</legend>
 
           <div>
-            <label>Title</label>
+            <label>{{ this.$t('fields.title') }}</label>
             <v-text-field
               v-model="album.title"
               variant="outlined"
               density="compact"
-              placeholder="e.g. Revolver"
+              :placeholder="`${$t('common.exampleAbbr')}Revolver`"
             />
           </div>
           <div>
-            <label>Artist</label>
+            <label>{{ this.$t('fields.artist') }}</label>
             <v-text-field
               v-model="album.artist"
               variant="outlined"
               density="compact"
-              placeholder="e.g. The Beatles"
+              :placeholder="`${$t('common.exampleAbbr')}The Beatles`"
             />
           </div>
           <div>
-            <label>Release Year</label>
+            <label>{{ this.$t('fields.released.long') }}</label>
             <v-text-field
               v-model="album.released"
               variant="outlined"
               density="compact"
-              placeholder="e.g. 1969"
+              :placeholder="`${$t('common.exampleAbbr')}1969`"
             />
           </div>
           <div>
-            <label>Genre</label>
+            <label>{{ this.$t('fields.genre') }}</label>
             <v-select
               v-model="album.genre"
               variant="outlined"
               density="compact"
-              placeholder="Choose a genre"
+              :placeholder="$t('albumModal.placeholders.genre')"
             />
           </div>
 
           <v-container>
             <v-row no-gutters justify="space-around">
               <div>
-                <label>Do you own a copy?</label>
+                <label>{{ $t('albumModal.labels.owned') }}</label>
                 <v-radio-group v-model="album.owned" inline hide-details class="mt-1">
-                  <v-radio density="comfortable" label="Yes" class="mr-2" :value="true" />
-                  <v-radio density="comfortable" label="No" :value="false" />
+                  <v-radio
+                    density="comfortable"
+                    :label="$t('common.yes')"
+                    class="mr-2"
+                    :value="true"
+                  />
+                  <v-radio density="comfortable" :label="$t('common.no')" :value="false" />
                 </v-radio-group>
               </div>
               <div>
-                <label>Mark as favorite?</label>
+                <label>{{ $t('albumModal.labels.favorite') }}</label>
                 <v-radio-group v-model="album.favorite" inline hide-details class="mt-1">
-                  <v-radio density="comfortable" label="Yes" class="mr-2" :value="true" />
-                  <v-radio density="comfortable" label="No" :value="false" />
+                  <v-radio
+                    density="comfortable"
+                    :label="$t('common.yes')"
+                    class="mr-2"
+                    :value="true"
+                  />
+                  <v-radio density="comfortable" :label="$t('common.no')" :value="false" />
                 </v-radio-group>
               </div>
             </v-row>
@@ -102,7 +112,7 @@
           </v-container>
 
           <div>
-            <label>Wikipedia Page</label>
+            <label>{{ this.$t('fields.wikipedia') }}</label>
             <v-text-field
               v-model="album.wikipedia"
               variant="outlined"
@@ -111,7 +121,7 @@
             />
           </div>
           <div>
-            <label>Discogs Link</label>
+            <label>{{ this.$t('fields.discogs') }}</label>
             <v-text-field
               v-model="album.discogs"
               variant="outlined"
@@ -120,7 +130,7 @@
             />
           </div>
           <div>
-            <label>Album Jacket</label>
+            <label>{{ this.$t('fields.jacket') }}</label>
             <v-text-field
               v-model="album.jacket"
               variant="outlined"
@@ -130,17 +140,17 @@
           </div>
         </fieldset>
         <fieldset class="px-5 py-4 mt-4">
-          <legend class="px-1">Record Info</legend>
+          <legend class="px-1">{{ $t('albumModal.fieldsets.record') }}</legend>
 
           <div>
-            <label>Records Format(s)</label>
+            <label>{{ $t('albumModal.labels.record') }}</label>
             <v-container>
               <v-row no-gutters>
                 <v-col cols="6">
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    label="Vinyl"
+                    :label="this.$t('fields.recordFormat.vinyl')"
                     value="vinyl"
                     hide-details
                   />
@@ -149,7 +159,7 @@
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    label="CD"
+                    :label="this.$t('fields.recordFormat.cd')"
                     value="cd"
                     hide-details
                   />
@@ -158,7 +168,7 @@
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    label="Cassette"
+                    :label="this.$t('fields.recordFormat.cassette')"
                     value="cassette"
                     hide-details
                   />
@@ -167,7 +177,7 @@
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    label="Other"
+                    :label="this.$t('fields.recordFormat.other')"
                     value="other"
                     hide-details
                   />
@@ -176,7 +186,7 @@
             </v-container>
           </div>
           <div>
-            <label>Album Format</label>
+            <label>{{ $t('albumModal.labels.album') }}</label>
             <v-radio-group v-model="album.album_format" inline hide-details>
               <v-container class="px-3">
                 <v-row no-gutters justify="start">
@@ -194,54 +204,54 @@
             </v-radio-group>
           </div>
           <div>
-            <label>Catalog Number</label>
+            <label>{{ this.$t('fields.catalogNum.long') }}</label>
             <v-text-field
               v-model="album.catalog_num"
               variant="outlined"
               density="compact"
-              placeholder="e.g. 1C 072-04 097"
+              :placeholder="`${$t('common.exampleAbbr')}1C 072-04 097`"
             />
           </div>
           <div>
-            <label>Label</label>
+            <label>{{ this.$t('fields.label') }}</label>
             <v-text-field
               v-model="album.label"
               variant="outlined"
               density="compact"
-              placeholder="e.g. Apple Records"
+              :placeholder="`${$t('common.exampleAbbr')}Apple Records`"
             />
           </div>
           <div>
-            <label>Country</label>
+            <label>{{ this.$t('fields.country') }}</label>
             <v-text-field
               v-model="album.country"
               variant="outlined"
               density="compact"
-              placeholder="e.g. Germany"
+              :placeholder="`${$t('common.exampleAbbr')}Germany`"
             />
           </div>
           <div>
-            <label>Edition Year</label>
+            <label>{{ this.$t('fields.edition.long') }}</label>
             <v-text-field
               v-model="album.edition"
               variant="outlined"
               density="compact"
-              placeholder="e.g. 1977"
+              :placeholder="`${$t('common.exampleAbbr')}1977`"
             />
           </div>
           <div>
-            <label>Matrix</label>
+            <label>{{ this.$t('fields.matrix') }}</label>
             <v-text-field
               v-model="album.matrix"
               variant="outlined"
               density="compact"
-              placeholder="e.g. 04097-A-2 SHZE 186 A - X2"
+              :placeholder="`${$t('common.exampleAbbr')}04097-A-2 SHZE 186 A - X2`"
             />
           </div>
           <v-container class="px-0">
             <v-row>
               <v-col>
-                <label>Condition</label>
+                <label>{{ this.$t('fields.condition') }}</label>
                 <v-text-field
                   v-model="album.condition"
                   variant="outlined"
@@ -250,7 +260,7 @@
                 />
               </v-col>
               <v-col>
-                <label>Disks</label>
+                <label>{{ this.$t('fields.nDisk') }}</label>
                 <v-text-field
                   v-model="album.nDisks"
                   variant="outlined"
@@ -261,19 +271,23 @@
             </v-row>
           </v-container>
           <div>
-            <label>Notes</label>
+            <label>{{ this.$t('fields.notes') }}</label>
             <v-text-field
               v-model="album.notes"
               variant="outlined"
               density="compact"
-              placeholder="Here goes any other info related to the record"
+              :placeholder="$t('albumModal.placeholders.notes')"
             />
           </div>
         </fieldset>
       </v-form>
       <div class="d-flex justify-space-evenly mt-8">
-        <v-btn width="180" variant="outlined">Reset</v-btn>
-        <v-btn width="180" color="primary" @click="submitAlbum">Submit</v-btn>
+        <v-btn width="180" variant="outlined">
+          {{ $t(`albumModal.buttons.${isEditing ? 'cancel' : 'reset'}`) }}
+        </v-btn>
+        <v-btn width="180" color="primary" @click="submitAlbum">
+          {{ $t('albumModal.buttons.submit') }}
+        </v-btn>
       </div>
     </v-card>
   </v-dialog>

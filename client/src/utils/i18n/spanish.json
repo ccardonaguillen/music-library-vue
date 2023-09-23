@@ -9,7 +9,22 @@
     "owned": "Adquirido",
     "favorite": "Favorito",
     "genre": "Género",
-    "genreOptions": {},
+    "genreOptions": {
+      "rock": "Rock",
+      "electronic": "Electrónica",
+      "pop": "Pop",
+      "folk": "Folk, Country & Universal",
+      "jazz": "Jazz",
+      "funk": "Funk / Soul",
+      "classical": "Clásica",
+      "hipHop": "Hip Hop",
+      "latin": "Latina",
+      "stage": "Teatro & Cine",
+      "reggae": "Reggae",
+      "nonMusic": "No-Música",
+      "children": "Para niños",
+      "military": "Bandas & Militar"
+    },
     "wikipedia": "Página Wikipedia",
     "discogs": "Enlace Discogs",
     "jacket": "Carátula",
@@ -37,11 +52,13 @@
   },
   "common": {
     "exampleAbbr": "p. ej. ",
-    "yes": "Sí"
+    "all": "Todos",
+    "yes": "Sí",
+    "no": "No"
   },
   "alerts": {
     "added": {
-      "success": "Álbum añadido a la colección: {{title}}",
+      "success": "Álbum añadido a la colección: {title}",
       "duplicated": "Este álbum ya está en la colección",
       "error": "Error al añadir álbum"
     },
@@ -56,14 +73,8 @@
     }
   },
   "controls": {
-    "entries": {
-      "zero": "No hay ningún album en la colección. Añade uno usando el botón",
-      "other": "Mostrando {{displayed}} de {{total}} álbumes"
-    },
-    "filter": {
-      "by": "Filtrar por",
-      "apply": "Aplicar filtro"
-    },
+    "entries": "No hay ningún album en la colección. Añade uno usando el botón | Mostrando {displayed} de {total} álbumes | Mostrando {displayed} de {total} álbumes",
+    "filters": "Filtros" ,
     "newAlbum": "Añadir Álbum"
   },
   "albumModal": {
@@ -87,9 +98,14 @@
     "buttons": {
       "load": "Cargar Datos",
       "submit": "Aceptar",
-      "reset": "Reestabl.",
+      "reset": "Reestablecer",
       "cancel": "Cancelar",
       "close": "Cerrar"
+    },
+    "placeholders": {
+      "discogs": "Discogs release ID",
+      "genre": "Selecciona un género",
+      "notes": "Introduce aquí cualquier otra información adicional"
     }
   },
   "optionsModal": {

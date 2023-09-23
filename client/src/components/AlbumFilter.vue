@@ -1,10 +1,11 @@
 <template>
-  <p v-if="albumCount">{{ `Showing ${shownAlbumCount} out of ${albumCount} albums` }}</p>
-  <p v-else>No albums in the library. Add one by clicking the button</p>
-  <h3>Filters</h3>
+  <p>
+    {{ $tc('controls.entries', albumCount, { displayed: shownAlbumCount, total: albumCount }) }}
+  </p>
+  <h3>{{ $t('controls.filters') }}</h3>
   <div class="d-flex align-end" style="gap: 32px">
     <div style="flex: 3">
-      <p class="pl-3">Artist</p>
+      <p class="pl-3">{{ $t('fields.artist') }}</p>
       <v-autocomplete
         :items="artists"
         v-model="filters.artist"
@@ -19,7 +20,7 @@
     </div>
 
     <div style="flex: 1">
-      <p class="pl-3">Owned</p>
+      <p class="pl-3">{{ $t('fields.owned') }}</p>
       <v-select
         v-model="filters.owned"
         :items="trueFalseOptions"
@@ -33,7 +34,7 @@
     </div>
 
     <div style="flex: 1">
-      <p class="pl-3">Favorite</p>
+      <p class="pl-3">{{ $t('fields.favorite') }}</p>
       <v-select
         v-model="filters.favorite"
         :items="trueFalseOptions"
@@ -48,7 +49,7 @@
 
     <v-spacer />
     <v-btn size="large" prepend-icon="mdi-plus" color="primary" @click="openModal">
-      New Album
+      {{ $t('controls.newAlbum') }}
     </v-btn>
   </div>
 </template>
@@ -64,9 +65,9 @@ export default {
     return {
       libraryTimeOut: null,
       trueFalseOptions: [
-        { label: 'All', value: null },
-        { label: 'Yes', value: true },
-        { label: 'No', value: false }
+        { label: this.$t('common.all'), value: null },
+        { label: this.$t('common.yes'), value: true },
+        { label: this.$t('common.no'), value: false }
       ]
     }
   },
