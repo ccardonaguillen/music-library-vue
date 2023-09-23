@@ -26,8 +26,8 @@ export const useLibraryStore = defineStore('library', {
     artists: [],
     page: 1,
     pageSize: 10,
-    sortBy: [{ key: 'released', order: 'asc' }],
-    filters: { artist: [], released: [1950, 2000], owned: null, favorite: null },
+    sortBy: [],
+    filters: { artist: [], owned: null, favorite: null },
     albumCount: 0,
     isFetching: false
   }),
@@ -76,15 +76,16 @@ export const useLibraryStore = defineStore('library', {
 
       let filterOptions = []
 
-      if (this.filters.released) {
-        filterOptions.push(where('released', '>=', this.filters.released[0]))
-        filterOptions.push(where('released', '<=', this.filters.released[1]))
-
-        // sortOptions.unshift(orderBy('released', 'asc'))
-      }
-
       if (this.filters.artist.length) {
         filterOptions.push(where('artist', 'in', this.filters.artist))
+      }
+
+      if (this.filters.owned !== null) {
+        filterOptions.push(where('owned', '==', this.filters.owned))
+      }
+
+      if (this.filters.favorite !== null) {
+        filterOptions.push(where('favorite', '==', this.filters.favorite))
       }
 
       const q = query(

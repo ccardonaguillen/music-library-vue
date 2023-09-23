@@ -2,7 +2,7 @@
   <p v-if="albumCount">{{ `Showing ${shownAlbumCount} out of ${albumCount} albums` }}</p>
   <p v-else>No albums in the library. Add one by clicking the button</p>
   <h3>Filters</h3>
-  <div class="d-flex align-end">
+  <div class="d-flex align-end" style="gap: 32px">
     <div style="flex: 3">
       <p class="pl-3">Artist</p>
       <v-autocomplete
@@ -14,34 +14,38 @@
         density="compact"
         variant="outlined"
         rounded
+        placeholder="No artist selected"
       />
     </div>
-    <v-divider vertical class="mx-4" />
-    <div style="flex: 2">
-      <p>Release year</p>
-      <v-range-slider
-        v-model="filters.released"
-        strict
-        min="1930"
-        max="2050"
-        step="1"
+
+    <div style="flex: 1">
+      <p class="pl-3">Owned</p>
+      <v-select
+        v-model="filters.owned"
+        :items="trueFalseOptions"
+        item-value="value"
+        item-title="label"
         hide-details
-        :thumb-label="true"
-        style="height: 44px"
-        @update:model-value="refreshTable"
+        density="compact"
+        variant="outlined"
+        rounded
       />
-
-      <!--      <div class="d-flex" style="gap: 8px">-->
-      <!--        <v-select hide-details density="compact" variant="outlined" rounded />-->
-      <!--        <v-select hide-details density="compact" variant="outlined" rounded />-->
-      <!--      </div>-->
     </div>
-    <v-divider vertical class="mx-4" />
 
-    <v-btn variant="outlined" rounded text="Owned" />
-    <v-divider vertical class="mx-4" />
+    <div style="flex: 1">
+      <p class="pl-3">Favorite</p>
+      <v-select
+        v-model="filters.favorite"
+        :items="trueFalseOptions"
+        item-value="value"
+        item-title="label"
+        hide-details
+        density="compact"
+        variant="outlined"
+        rounded
+      />
+    </div>
 
-    <v-btn variant="outlined" rounded text="Favorite" />
     <v-spacer />
     <v-btn size="large" prepend-icon="mdi-plus" color="primary" @click="openModal">
       New Album
@@ -58,18 +62,12 @@ export default {
   name: 'AlbumFilter',
   data() {
     return {
-      selectedOption: null,
-      filterOptions: [
-        { name: 'title', label: 'Title', placeholder: 'submarine' },
-        { name: 'artist', label: 'Artist', placeholder: '"zeppelin", "beatles, rolling"' },
-        {
-          name: 'released',
-          label: 'Release date',
-          placeholder: '"1990", "1-2000", ">1900", "<1980"'
-        },
-        { name: 'owned', label: 'Owned', placeholder: '"true", "no", "not owned"' }
-      ],
-      libraryTimeOut: null
+      libraryTimeOut: null,
+      trueFalseOptions: [
+        { label: 'All', value: null },
+        { label: 'Yes', value: true },
+        { label: 'No', value: false }
+      ]
     }
   },
   computed: {
@@ -89,8 +87,16 @@ export default {
       }, 1000)
     }
   },
-  mounted() {
-    this.selectedOption = this.filterOptions[0]
+  mounted() {},
+
+  watch: {
+    filters: {
+      handler() {
+        console.log('refreshing')
+        this.fetchLibrary()
+      },
+      deep: true
+    }
   }
 }
 </script>
