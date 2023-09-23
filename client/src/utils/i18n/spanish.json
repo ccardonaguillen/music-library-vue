@@ -1,0 +1,111 @@
+{
+  "fields": {
+    "title": "Título",
+    "artist": "Artista",
+    "released": {
+      "short": "Publicado",
+      "long": "Año Publicación"
+    },
+    "owned": "Adquirido",
+    "favorite": "Favorito",
+    "genre": "Género",
+    "genreOptions": {},
+    "wikipedia": "Página Wikipedia",
+    "discogs": "Enlace Discogs",
+    "jacket": "Carátula",
+    "recordFormat": {
+      "vinyl": "Vinilo",
+      "cd": "CD",
+      "cassette": "Casete",
+      "other": "Otro"
+    },
+    "catalogNum": {
+      "short": "No. Catálogo",
+      "long": "Número Catálogo"
+    },
+    "label": "Sello",
+    "country": "País",
+    "edition": {
+      "short": "Editado",
+      "long": "Año Edición"
+    },
+    "matrix": "Matriz",
+    "condition": "Estado",
+    "nDisk": "Discos",
+    "notes": "Observaciones",
+    "format": "Formato"
+  },
+  "common": {
+    "exampleAbbr": "p. ej. ",
+    "yes": "Sí"
+  },
+  "alerts": {
+    "added": {
+      "success": "Álbum añadido a la colección: {{title}}",
+      "duplicated": "Este álbum ya está en la colección",
+      "error": "Error al añadir álbum"
+    },
+    "removed": "Álbum borrado",
+    "edited": "Álbum editado"
+  },
+  "header": {
+    "title": "Colección Música",
+    "user": {
+      "signIn": "Iniciar Sesión con Google",
+      "signOut": "Cerrar Sesión"
+    }
+  },
+  "controls": {
+    "entries": {
+      "zero": "No hay ningún album en la colección. Añade uno usando el botón",
+      "other": "Mostrando {{displayed}} de {{total}} álbumes"
+    },
+    "filter": {
+      "by": "Filtrar por",
+      "apply": "Aplicar filtro"
+    },
+    "newAlbum": "Añadir Álbum"
+  },
+  "albumModal": {
+    "title": {
+      "new": "Nuevo Álbum",
+      "edit": "Editar Álbum"
+    },
+    "hero": "Introduce los datos del álbum o cárgalos desde Discogs",
+    "fieldsets": {
+      "general": "Información General",
+      "record": "Datos del Disco"
+    },
+    "labels": {
+      "owned": "¿Tienes una copia?",
+      "favorite": "¿Añadir a favoritos?",
+      "wikipedia": "Artículo Wikipedia",
+      "discogs": "Enlace Discogs",
+      "record": "Formato(s) Grabación",
+      "album": "Tipo Álbum"
+    },
+    "buttons": {
+      "load": "Cargar Datos",
+      "submit": "Aceptar",
+      "reset": "Reestabl.",
+      "cancel": "Cancelar",
+      "close": "Cerrar"
+    }
+  },
+  "optionsModal": {
+    "edit": "Editar Datos",
+    "delete": "Borrar Álbum"
+  },
+  "table": {
+    "notLogged": {
+      "part1": "No estás registrado. Pulsa el botón en la parte superior o ",
+      "action": "haz click aquí para iniciar sesión",
+      "part2": " y empezar añadir álbumes a tu colección de música."
+    },
+    "noAlbums": {
+      "part1": "No hay ningún álbum en tu colección. ",
+      "action": "Carga una colección"
+    }
+  },
+  "credits": "Diseño y código"
+}

@@ -1,0 +1,111 @@
+{
+  "fields": {
+    "title": "",
+    "artist": "Artist",
+    "released": {
+      "short": "Released",
+      "long": "Release Year"
+    },
+    "owned": "Owned",
+    "favorite": "Favorite",
+    "genre": "Genre",
+    "genreOptions": {},
+    "wikipedia": "Wikipedia Page",
+    "discogs": "Discogs Link",
+    "jacket": "Album Jacket",
+    "recordFormat": {
+      "vinyl": "Vinyl",
+      "cd": "CD",
+      "cassette": "Cassette",
+      "other": "Other"
+    },
+    "catalogNum": {
+      "short": "Catalog #",
+      "long": "Catalog Number"
+    },
+    "label": "Label",
+    "country": "Country",
+    "edition": {
+      "short": "Edition",
+      "long": "Edition Year"
+    },
+    "matrix": "Matrix",
+    "condition": "Condition",
+    "nDisk": "Disks",
+    "notes": "Notes",
+    "format": "Formato"
+  },
+  "common": {
+    "exampleAbbr": "e.g. ",
+    "yes": "Yes"
+  },
+  "alerts": {
+    "added": {
+      "success": "Album added to library: {{title}}",
+      "duplicated": "Album already exists in the library",
+      "error": "Error adding album to library"
+    },
+    "removed": "Album removed",
+    "edited": "Album edited"
+  },
+  "header": {
+    "title": "Music Library",
+    "user": {
+      "signIn": "Sign In with Google",
+      "signOut": "Sign Out"
+    }
+  },
+  "controls": {
+    "entries": {
+      "zero": "No albums in the library. Add one by clicking the button",
+      "other": "Showing {{displayed}} out of {{total}} albums"
+    },
+    "filter": {
+      "by": "Filter by",
+      "apply": "Apply filter"
+    },
+    "newAlbum": "New album"
+  },
+  "albumModal": {
+    "title": {
+      "new": "New Album",
+      "edit": "Edit Album"
+    },
+    "hero": "Input the album info manually or load it from Discogs",
+    "fieldsets": {
+      "general": "General Info",
+      "record": "Record Info"
+    },
+    "labels": {
+      "owned": "Do you own a copy?",
+      "favorite": "Mark as favorite?",
+      "wikipedia": "Wikipedia Page",
+      "discogs": "Discogs Link",
+      "record": "Record Format(s)",
+      "album": "Album Format"
+    },
+    "buttons": {
+      "load": "Load Info",
+      "submit": "Submit",
+      "reset": "Reset",
+      "cancel": "Cancel",
+      "close": "Close Modal"
+    }
+  },
+  "optionsModal": {
+    "edit": "Edit Album",
+    "delete": "Delete Album"
+  },
+  "table": {
+    "notLogged": {
+      "part1": "You are not currently logged in. Use the button at the top of the page or ",
+      "action": "click here to log in",
+      "part2": "and start adding albums."
+    },
+    "noAlbums": {
+      "part1": "There are currently no albums in your music library. ",
+      "action": "Upload a collection"
+    }
+  },
+  "credits": "Design and code"
+}
