@@ -8,6 +8,10 @@
               <v-icon icon="mdi-album" size="45" />
               <h1 v-t="'header.title'"></h1>
             </div>
+            <div class="d-flex align-center">
+              <router-link :to="{ name: 'topRS1' }">Top RS1</router-link>
+              <router-link :to="{ name: 'topRS3' }">Top RS3</router-link>
+            </div>
             <v-btn-toggle v-model="$i18n.locale" color="deep-purple-accent-3" style="gap: 16px">
               <v-btn value="en" text="English" />
               <v-btn value="es" text="Español" />

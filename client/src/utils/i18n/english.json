@@ -1,6 +1,6 @@
 {
   "fields": {
-    "title": "",
+    "title": "Title",
     "artist": "Artist",
     "released": {
       "short": "Released",
