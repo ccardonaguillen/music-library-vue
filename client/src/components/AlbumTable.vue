@@ -3,21 +3,51 @@
     v-model:page="page"
     v-model:items-per-page="pageSize"
     v-model:sort-by="sortBy"
+    v-model:expanded="expandedRow"
     hover
     :headers="headers"
     :items="albums"
-    :items-length="albumCount"
+    :items-length="shownAlbumCount"
     :loading="isFetching"
+    :items-per-page-text="'Albums per page'"
     class="table-striped"
     @update:options="fetchLibrary"
+    @click:row="handleExpandRow"
   >
     <template v-slot:no-data>
-      <span>
+      <div class="d-flex flex-column align-center mt-4 mb-8" v-if="!isUserSignedIn">
+        You are currently not logged in. Sign to start managing your music library.
+        <v-btn
+          color="primary"
+          text="Sign in with google"
+          prepend-icon="mdi-google"
+          class="mt-4"
+          @click="signIn"
+        />
+      </div>
+      <div class="d-flex flex-column align-center mt-4 mb-8" v-else-if="!albumCount">
         There are currently no albums in your music library. Upload a collection from your computer
         or use the "New Album" button.
-      </span>
+        <div class="d-flex mt-4" style="gap: 12px">
+          <v-btn
+            color="primary"
+            text="Import album library"
+            prepend-icon="mdi-album"
+            @click="$refs.importLibrary.click()"
+          />
+          <input
+            type="file"
+            ref="importLibrary"
+            style="display: none"
+            @change="onLibraryUploaded"
+          />
+
+          <v-btn color="primary" text="Add new album" prepend-icon="mdi-plus" @click="openModal" />
+        </div>
+      </div>
+      <div class="mt-4 mb-8" v-else>No albums found that match the current filters</div>
     </template>
-    <template v-slot:[`item.options`]="{ item }">
+    <template v-slot:[`item.options`]="{ item: { raw, value } }">
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn variant="flat" density="compact" icon="mdi-dots-vertical" v-bind="props" />
@@ -27,30 +57,99 @@
             <v-list-item
               prepend-icon="mdi-file-document-edit-outline"
               title="Edit Album"
-              @click="onAlbumEdited(item.index)"
+              @click="onAlbumEdited(raw)"
             />
             <v-list-item
               prepend-icon="mdi-file-document-remove-outline"
               title="Delete Album"
-              @click="removeAlbum(item.value)"
+              @click="removeAlbum(value)"
             />
           </v-list>
         </v-card>
       </v-menu>
     </template>
-    <template v-slot:[`item.owned`]="{ item }">
+    <template v-slot:[`item.owned`]="{ item: { columns, value } }">
       <v-icon
-        :icon="item.columns.owned ? 'mdi-check' : 'mdi-close'"
+        :icon="columns.owned ? 'mdi-check' : 'mdi-close'"
         class="table-icon"
-        @click="editAlbum(item.value, { owned: !item.columns.owned })"
+        @click="editAlbum(value, { owned: !columns.owned })"
       />
     </template>
-    <template v-slot:[`item.favorite`]="{ item }">
+    <template v-slot:[`item.favorite`]="{ item: { columns, value } }">
       <v-icon
-        :icon="item.columns.favorite ? 'mdi-star' : 'mdi-star-outline'"
+        :icon="columns.favorite ? 'mdi-star' : 'mdi-star-outline'"
         class="table-icon"
-        @click="editAlbum(item.value, { favorite: !item.columns.favorite })"
+        @click="editAlbum(value, { favorite: !columns.favorite })"
       />
+    </template>
+    <template v-slot:expanded-row="{ item: { raw: album }, columns }">
+      <tr>
+        <td :colspan="columns.length">
+          <v-row class="d-flex my-4">
+            <v-col cols="3">
+              <v-img :src="album.jacket" class="rounded-sm mt-1" v-if="album.jacket" />
+              <v-card
+                flat
+                color="blue-grey-lighten-5"
+                height="100%"
+                class="d-flex align-center justify-center"
+                v-else
+              >
+                <v-icon icon="mdi-cancel" size="40"></v-icon>
+              </v-card>
+            </v-col>
+            <v-col cols="3">
+              <h3 class="text-decoration-underline mb-1">General info</h3>
+              <div class="extra-info-container">
+                <p class="font-weight-bold">{{ $t('fields.genre') }}</p>
+                <p>{{ album.genre || '-' }}</p>
+
+                <p class="font-weight-bold">Top 500 RS1</p>
+                <p>{{ album.topRS1 || '-' }}</p>
+
+                <p class="font-weight-bold">Top 500 RS3</p>
+                <p>{{ album.topRS3 || '-' }}</p>
+
+                <a :href="album.wikipedia" class="font-weight-bold">Wikipedia</a>
+                <span></span>
+
+                <a :href="album.discogs" class="font-weight-bold">Discogs</a>
+              </div>
+            </v-col>
+            <v-col>
+              <h3 class="text-decoration-underline mb-1">Record info</h3>
+              <div class="extra-info-container">
+                <p class="font-weight-bold">Record Format(s)</p>
+                <p>{{ album.record_format || '-' }}</p>
+
+                <p class="font-weight-bold">Album Format</p>
+                <p>{{ album.album_format || '-' }}</p>
+
+                <p class="font-weight-bold">{{ $t('fields.catalogNum.long') }}</p>
+                <p>{{ album.catalog_num || '-' }}</p>
+
+                <p class="font-weight-bold">{{ $t('fields.label') }}</p>
+                <p>{{ album.label || '-' }}</p>
+
+                <p class="font-weight-bold">{{ $t('fields.country') }}</p>
+                <p>{{ album.country || '-' }}</p>
+
+                <p class="font-weight-bold">{{ $t('fields.edition.long') }}</p>
+                <p>{{ album.edition || '-' }}</p>
+
+                <p class="font-weight-bold">{{ $t('fields.matrix') }}</p>
+                <p>{{ album.matrix || '-' }}</p>
+
+                <p class="font-weight-bold">{{ $t('fields.condition') }}</p>
+                <p>{{ album.condition || '-' }}</p>
+
+                <p class="font-weight-bold">{{ $t('fields.notes') }}</p>
+                <p>{{ album.notes || '-' }}</p>
+              </div>
+            </v-col>
+          </v-row>
+        </td>
+      </tr>
     </template>
   </v-data-table-server>
 </template>
@@ -59,12 +158,14 @@
 import { mapActions, mapState, mapWritableState } from 'pinia'
 import { useLibraryStore } from '@/stores/library'
 import { useModalStore } from '@/stores/modal'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'AlbumTable',
   emits: ['albumEdited'],
   data() {
     return {
+      expandedRow: [],
       headers: [
         { title: '', align: 'start', sortable: false, key: 'options', width: '0px' },
         {
@@ -106,17 +207,31 @@ export default {
     }
   },
   computed: {
-    ...mapState(useLibraryStore, ['albums', 'albumCount', 'isFetching']),
+    ...mapState(useUserStore, ['isUserSignedIn']),
+    ...mapState(useLibraryStore, ['albums', 'albumCount', 'shownAlbumCount', 'isFetching']),
     ...mapWritableState(useLibraryStore, ['page', 'pageSize', 'sortBy']),
     ...mapWritableState(useModalStore, ['album'])
   },
   methods: {
-    ...mapActions(useLibraryStore, ['fetchLibrary', 'removeAlbum', 'editAlbum']),
+    ...mapActions(useUserStore, ['signIn']),
+    ...mapActions(useLibraryStore, ['fetchLibrary', 'removeAlbum', 'editAlbum', 'uploadLibrary']),
     ...mapActions(useModalStore, ['openModal']),
 
-    onAlbumEdited(index) {
-      this.album = { ...this.albums[index] }
+    onAlbumEdited(album) {
+      this.album = { ...album }
       this.openModal()
+    },
+
+    onLibraryUploaded(e) {
+      const fileInput = e.target
+
+      let reader = new FileReader()
+      reader.onload = this.uploadLibrary
+      reader.readAsText(fileInput.files[0], 'utf-8')
+    },
+
+    handleExpandRow(event, { item }) {
+      this.expandedRow = this.expandedRow.includes(item.value) ? [] : [item.value]
     }
   }
 }
@@ -126,5 +241,15 @@ export default {
 i.table-icon:hover {
   transform: scale(1.3);
   transition: all 0.1s ease-in;
+}
+
+.extra-info-container {
+  display: grid;
+  grid-template-columns: minmax(auto, 150px) 1fr;
+  column-gap: 12px;
+}
+
+a:visited {
+  color: inherit;
 }
 </style>
