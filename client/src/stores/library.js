@@ -19,6 +19,8 @@ import {
 } from 'firebase/firestore'
 import { useUserStore } from '@/stores/user'
 import { useSnackbarStore } from '@/stores/snackbar'
+import { parseCollection } from '@/utils/csvLoader'
+import { i18n } from '@/i18n'
 
 export const useLibraryStore = defineStore('library', {
   state: () => ({
@@ -29,16 +31,13 @@ export const useLibraryStore = defineStore('library', {
     sortBy: [],
     filters: { artist: [], owned: null, favorite: null },
     albumCount: 0,
+    shownAlbumCount: 0,
     isFetching: false
   }),
 
   getters: {
     libraryRef: () => {
       return collection(getFirestore(), useUserStore().id)
-    },
-
-    shownAlbumCount() {
-      return this.albums.length
     }
   },
 
@@ -58,7 +57,7 @@ export const useLibraryStore = defineStore('library', {
       const querySnapshot = await getDocs(this.libraryRef)
       querySnapshot.forEach((doc) => {
         const artist = doc.data().artist
-        this.artists.push(artist)
+        if (!this.artists.includes(artist)) this.artists.push(artist)
       })
 
       this.artists = this.artists.sort((a, b) => a.localeCompare(b))
@@ -99,11 +98,13 @@ export const useLibraryStore = defineStore('library', {
       )
 
       const querySnapshot = await getDocs(q)
-
       querySnapshot.forEach((doc) => {
         // console.log(doc.data())
         this.albums.push({ id: doc.id, ...doc.data() })
       })
+
+      const countSnapShot = await getCountFromServer(q)
+      this.shownAlbumCount = countSnapShot.data().count
 
       this.isFetching = false
     },
@@ -114,16 +115,18 @@ export const useLibraryStore = defineStore('library', {
 
     async filterLibrary() {},
 
-    async addAlbum(albumInfo) {
+    async addAlbum(albumInfo, refresh) {
       const q = await this.findAlbum(albumInfo)
       const snapshot = await getCountFromServer(q)
       if (snapshot.data().count) {
-        useSnackbarStore().displayErrorMessage('This album already exists in the library')
+        useSnackbarStore().displayErrorMessage(i18n.global.t('alerts.added.duplicated'))
       } else {
         await addDoc(this.libraryRef, albumInfo)
         this.albumCount++
-        await this.fetchLibrary()
-        useSnackbarStore().displaySuccessMessage('Album added successfully')
+        if (refresh) await this.fetchLibrary()
+        useSnackbarStore().displaySuccessMessage(
+          i18n.global.t('alerts.added.success', { title: albumInfo.title })
+        )
       }
     },
 
@@ -132,14 +135,14 @@ export const useLibraryStore = defineStore('library', {
       await deleteDoc(albumRef)
       await this.fetchLibrary()
       this.albumCount--
-      useSnackbarStore().displaySuccessMessage('Album removed successfully')
+      useSnackbarStore().displaySuccessMessage(i18n.global.t('alerts.removed'))
     },
 
     async editAlbum(albumId, albumInfo) {
       const albumRef = doc(getFirestore(), useUserStore().id, albumId)
       await updateDoc(albumRef, albumInfo)
       await this.fetchLibrary()
-      useSnackbarStore().displaySuccessMessage('Album edited successfully')
+      useSnackbarStore().displaySuccessMessage(i18n.global.t('alerts.edited'))
     },
 
     async findAlbum({ title, artist, released }) {
@@ -149,6 +152,14 @@ export const useLibraryStore = defineStore('library', {
         where('artist', '==', artist),
         where('released', '==', released)
       )
+    },
+
+    async uploadLibrary(e) {
+      const fileContent = e.target.result
+      const collection = parseCollection(fileContent)
+
+      await Promise.all(collection.map((info) => this.addAlbum(info)))
+      await this.fetchLibrary()
     }
   }
 })
