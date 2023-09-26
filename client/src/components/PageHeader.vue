@@ -12,8 +12,8 @@
             <div class="d-flex align-center">
               <div class="d-flex align-center mr-6" style="gap: 20px">
                 <router-link :to="{ name: 'home' }">Home</router-link>
-                <router-link :to="{ name: 'topRS1' }">Top RS1</router-link>
-                <router-link :to="{ name: 'topRS3' }">Top RS3</router-link>
+                <router-link :to="{ name: 'topRS1' }">Top 500 RS1</router-link>
+                <router-link :to="{ name: 'topRS3' }">Top 500 RS3</router-link>
               </div>
               <user-menu />
             </div>

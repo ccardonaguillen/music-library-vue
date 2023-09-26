@@ -3,7 +3,11 @@
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="11">
-          <v-switch v-model="hideOwned" color="primary" label="Ocultar adquiridos" />
+          <div class="d-flex justify-space-between align-center mb-4">
+            <v-switch hide-details v-model="hideOwned" color="primary" label="Ocultar adquiridos" />
+            <h2 style="flex: 1">Top Rolling Stones {{ number }}</h2>
+            <div style="flex: 1"></div>
+          </div>
           <div class="cards-container">
             <top-r-s-album-card :album="album" v-for="album in topRSAlbums" :key="album.id" />
           </div>

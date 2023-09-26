@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="620" :model-value="showModal" @update:model-value="onShowModalChanged">
+  <v-dialog max-width="620" :model-value="show" @update:model-value="onShowModalChanged">
     <v-card class="d-flex flex-column px-9 py-8">
       <v-btn
         variant="flat"
@@ -64,7 +64,13 @@
             <v-row no-gutters justify="space-around">
               <div>
                 <label>{{ $t('albumModal.labels.owned') }}</label>
-                <v-radio-group v-model="album.owned" inline hide-details class="mt-1">
+                <v-radio-group
+                  v-model="album.owned"
+                  :value="false"
+                  inline
+                  hide-details
+                  class="mt-1"
+                >
                   <v-radio
                     density="comfortable"
                     :label="$t('common.yes')"
@@ -76,7 +82,13 @@
               </div>
               <div>
                 <label>{{ $t('albumModal.labels.favorite') }}</label>
-                <v-radio-group v-model="album.favorite" inline hide-details class="mt-1">
+                <v-radio-group
+                  v-model="album.favorite"
+                  :value="false"
+                  inline
+                  hide-details
+                  class="mt-1"
+                >
                   <v-radio
                     density="comfortable"
                     :label="$t('common.yes')"
@@ -295,7 +307,7 @@
 
 <script>
 import { fetchRelease } from '@/utils/discogs'
-import { mapActions, mapState } from 'pinia'
+import { mapActions, mapState, mapWritableState } from 'pinia'
 import { useLibraryStore } from '@/stores/library'
 import { useModalStore } from '@/stores/modal'
 
@@ -307,10 +319,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(useModalStore, {
-      album: 'album',
-      showModal: 'show'
-    }),
+    ...mapState(useModalStore, ['show']),
+
+    ...mapWritableState(useModalStore, ['album']),
 
     isEditing() {
       return !!this.album.id
@@ -332,7 +343,7 @@ export default {
     async submitAlbum() {
       if (this.isEditing) {
         const { id, ...albumInfo } = this.album
-        await this.onAlbumEdited(id, albumInfo)
+        await this.editAlbum(id, albumInfo)
       } else await this.addAlbum(this.album)
 
       await this.closeModal()
