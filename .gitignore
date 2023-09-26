@@ -27,3 +27,6 @@ coverage
 *.sln
 *.sw?
 /.vscode/extensions.json
+/client/src/assets/Album.txt
+/client/src/assets/Album-sample.txt
+/client/src/assets/album_sample.json
