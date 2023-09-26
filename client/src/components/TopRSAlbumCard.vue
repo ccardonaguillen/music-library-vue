@@ -3,7 +3,23 @@
     <v-chip color="white" size="small" variant="elevated" class="topPos font-weight-bold">{{
       album.topRS1
     }}</v-chip>
-    <v-img :src="album.jacket" width="200" max-width="200" class="mr-4 rounded" />
+    <v-img
+      :src="album.jacket"
+      width="200"
+      max-width="200"
+      class="mr-4 rounded"
+      v-if="album.jacket"
+    />
+    <v-card
+      flat
+      color="blue-grey-lighten-5"
+      width="200"
+      height="200"
+      class="d-flex align-center justify-center mr-4 rounded"
+      v-else
+    >
+      <v-icon icon="mdi-cancel" size="40"></v-icon>
+    </v-card>
     <div class="d-flex flex-column align-start">
       <div class="album-info-container">
         <p class="font-weight-bold text-body-1">{{ $t('fields.title') }}</p>
