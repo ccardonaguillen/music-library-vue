@@ -1,6 +1,11 @@
 <template>
-  <v-dialog max-width="620" :model-value="show" @update:model-value="onShowModalChanged">
-    <v-card class="d-flex flex-column px-9 py-8">
+  <v-dialog
+    :fullscreen="$vuetify.display.xs"
+    max-width="620"
+    :model-value="show"
+    @update:model-value="onShowModalChanged"
+  >
+    <v-card class="d-flex flex-column px-4 py-8 px-md-9 py-md-8">
       <v-btn
         variant="flat"
         density="comfortable"
@@ -8,7 +13,7 @@
         class="close-btn"
         @click="closeModal"
       />
-      <h2>{{ $t(`albumModal.title.${isEditing ? 'edit' : 'new'}`) }}</h2>
+      <h2 class="mb-3">{{ $t(`albumModal.title.${isEditing ? 'edit' : 'new'}`) }}</h2>
       <p>{{ $t('albumModal.hero') }}</p>
       <v-text-field
         v-model="discogsId"
@@ -16,12 +21,19 @@
         append-inner-icon="mdi-cloud-search"
         variant="outlined"
         density="compact"
+        hide-details
+        class="mb-2 mb-sm-8"
         @click:append-inner="fetchAlbum"
       />
 
       <v-form>
-        <fieldset class="px-5 py-4">
-          <legend class="px-1">{{ $t('albumModal.fieldsets.general') }}</legend>
+        <component :is="$vuetify.display.xs ? 'div' : 'fieldset'" class="pa-0 px-sm-5 py-sm-4">
+          <h3 class="text-decoration-underline sticky-header" v-if="$vuetify.display.xs">
+            {{ $t('albumModal.fieldsets.general') }}
+          </h3>
+          <legend class="px-1" v-else>
+            {{ $t('albumModal.fieldsets.general') }}
+          </legend>
 
           <div>
             <label>{{ this.$t('fields.title') }}</label>
@@ -61,7 +73,7 @@
           </div>
 
           <v-container>
-            <v-row no-gutters justify="space-around">
+            <v-row no-gutters :justify="$vuetify.display.xs ? 'space-between' : 'space-around'">
               <div>
                 <label>{{ $t('albumModal.labels.owned') }}</label>
                 <v-radio-group
@@ -150,9 +162,14 @@
               placeholder=""
             />
           </div>
-        </fieldset>
-        <fieldset class="px-5 py-4 mt-4">
-          <legend class="px-1">{{ $t('albumModal.fieldsets.record') }}</legend>
+        </component>
+        <component :is="$vuetify.display.xs ? 'div' : 'fieldset'" class="pa-0 px-sm-5 py-sm-4">
+          <h3 class="text-decoration-underline sticky-header" v-if="$vuetify.display.xs">
+            {{ $t('albumModal.fieldsets.record') }}
+          </h3>
+          <legend class="px-1" v-else>
+            {{ $t('albumModal.fieldsets.record') }}
+          </legend>
 
           <div>
             <label>{{ $t('albumModal.labels.record') }}</label>
@@ -199,20 +216,15 @@
           </div>
           <div>
             <label>{{ $t('albumModal.labels.album') }}</label>
-            <v-radio-group v-model="album.album_format" inline hide-details>
-              <v-container class="px-3">
-                <v-row no-gutters justify="start">
-                  <v-col cols="5">
-                    <v-radio label="EP (Extended Play)" value="ep" />
-                  </v-col>
-                  <v-col cols="4">
-                    <v-radio label="LP (Long Play)" value="lp" />
-                  </v-col>
-                  <v-col cols="3">
-                    <v-radio label="Single" value="single" />
-                  </v-col>
-                </v-row>
-              </v-container>
+            <v-radio-group
+              v-model="album.album_format"
+              :inline="$vuetify.display.smAndUp"
+              hide-details
+              class="album-format-container px-3"
+            >
+              <v-radio label="EP (Extended Play)" value="ep" />
+              <v-radio label="LP (Long Play)" value="lp" />
+              <v-radio label="Single" value="single" />
             </v-radio-group>
           </div>
           <div>
@@ -291,13 +303,15 @@
               :placeholder="$t('albumModal.placeholders.notes')"
             />
           </div>
-        </fieldset>
+        </component>
       </v-form>
-      <div class="d-flex justify-space-evenly mt-8">
-        <v-btn width="180" variant="outlined">
+      <div
+        class="d-flex flex-column-reverse flex-sm-row justify-space-evenly mt-8 button-container"
+      >
+        <v-btn :width="$vuetify.display.xs ? '100%' : 180" variant="outlined">
           {{ $t(`albumModal.buttons.${isEditing ? 'cancel' : 'reset'}`) }}
         </v-btn>
-        <v-btn width="180" color="primary" @click="submitAlbum">
+        <v-btn :width="$vuetify.display.xs ? '100%' : 180" color="primary" @click="submitAlbum">
           {{ $t('albumModal.buttons.submit') }}
         </v-btn>
       </div>
@@ -357,5 +371,34 @@ export default {
   position: absolute;
   top: 20px;
   right: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .close-btn {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+  }
+
+  .button-container {
+    background-color: white;
+    row-gap: 16px;
+    position: fixed;
+    left: 0;
+    bottom: 0px;
+    padding: 16px 16px 32px;
+    width: 100vw;
+  }
+
+  .sticky-header {
+    position: sticky;
+    top: -32px;
+    padding-top: 20px;
+    padding-bottom: 4px;
+    margin-bottom: 12px;
+    background-color: white;
+    z-index: 5;
+  }
 }
 </style>
