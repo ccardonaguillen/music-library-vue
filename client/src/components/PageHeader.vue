@@ -1,12 +1,18 @@
 <template>
   <v-app-bar class="bg-surface-variant">
     <v-row justify="center">
-      <v-col cols="12" sm="11" md="10" lg="8" xl="7" class="d-flex justify-space-between pl-6">
+      <v-col
+        cols="12"
+        sm="11"
+        md="10"
+        lg="8"
+        xl="7"
+        class="d-flex justify-space-between align-center pl-6"
+      >
         <div class="d-flex justify-center align-center">
-          <v-icon
+          <v-btn
             icon="mdi-menu"
-            :size="$vuetify.display.mdAndUp ? 32 : 28"
-            class="mr-4"
+            :size="$vuetify.display.mdAndUp ? 'x-large' : 'default'"
             @click="$emit('drawerToggled')"
           />
           <h1 v-t="'header.title'" v-if="$vuetify.display.mdAndUp"></h1>

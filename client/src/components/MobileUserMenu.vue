@@ -44,7 +44,7 @@
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block text="Log out" prepend-icon="mdi-power" />
+        <v-btn block text="Log out" prepend-icon="mdi-power" color="primary" />
       </div>
     </template>
   </v-navigation-drawer>

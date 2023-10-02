@@ -1,9 +1,9 @@
 <template>
-  <p>
+  <p class="mb-2 font-weight-bold text-primary">
     {{ $tc('controls.entries', albumCount, { displayed: shownAlbumCount, total: albumCount }) }}
   </p>
-  <h3>{{ $t('controls.filters') }}</h3>
-  <div class="d-flex justify-space-between align-end">
+  <h3 class="mb-2">{{ $t('controls.filters') }}</h3>
+  <div class="d-flex justify-space-between align-end mb-8">
     <div class="filter-container mr-4">
       <div style="grid-area: artist">
         <p class="pl-3">{{ $t('fields.artist') }}</p>
