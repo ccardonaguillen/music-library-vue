@@ -5,7 +5,7 @@
     v-model:sort-by="sortBy"
     v-model:expanded="expandedRow"
     hover
-    :headers="headers"
+    :headers="dynamicHeaders"
     :items="albums"
     :items-length="shownAlbumCount"
     :loading="isFetching"
@@ -68,21 +68,21 @@
         </v-card>
       </v-menu>
     </template>
-    <template v-slot:[`item.owned`]="{ item: { columns, value } }">
+    <template v-slot:[`item.owned`]="{ item }">
       <v-icon
-        :icon="columns.owned ? 'mdi-check' : 'mdi-close'"
+        :icon="item.owned ? 'mdi-check' : 'mdi-close'"
         class="table-icon"
-        @click="editAlbum(value, { owned: !columns.owned })"
+        @click="editAlbum(item.id, { owned: !item.owned })"
       />
     </template>
-    <template v-slot:[`item.favorite`]="{ item: { columns, value } }">
+    <template v-slot:[`item.favorite`]="{ item }">
       <v-icon
-        :icon="columns.favorite ? 'mdi-star' : 'mdi-star-outline'"
+        :icon="item.favorite ? 'mdi-star' : 'mdi-star-outline'"
         class="table-icon"
-        @click="editAlbum(value, { favorite: !columns.favorite })"
+        @click="editAlbum(item.id, { favorite: !item.favorite })"
       />
     </template>
-    <template v-slot:expanded-row="{ item: { raw: album }, columns }">
+    <template v-slot:expanded-row="{ item: album, columns }">
       <tr>
         <td :colspan="columns.length">
           <v-row class="d-flex my-4">
@@ -167,7 +167,6 @@ export default {
     return {
       expandedRow: [],
       headers: [
-        { title: '', align: 'start', sortable: false, key: 'options', width: '0px' },
         {
           title: this.$t('fields.title'),
           align: 'start',
@@ -188,7 +187,26 @@ export default {
           sortable: true,
           key: 'released',
           width: '10%'
-        },
+        }
+      ]
+    }
+  },
+  computed: {
+    ...mapState(useUserStore, ['isUserSignedIn']),
+    ...mapState(useLibraryStore, ['albums', 'albumCount', 'shownAlbumCount', 'isFetching']),
+    ...mapWritableState(useLibraryStore, ['page', 'pageSize', 'sortBy']),
+    ...mapWritableState(useModalStore, ['album']),
+
+    dynamicHeaders() {
+      const albumOptionColumn = {
+        title: '',
+        align: 'start',
+        sortable: false,
+        key: 'options',
+        width: '0px'
+      }
+
+      const desktopColumns = [
         {
           title: this.$t('fields.owned'),
           align: 'center',
@@ -204,13 +222,11 @@ export default {
           width: '10%'
         }
       ]
+
+      if (this.$vuetify.display.mdAndUp)
+        return [albumOptionColumn, ...this.headers, ...desktopColumns]
+      else return this.headers
     }
-  },
-  computed: {
-    ...mapState(useUserStore, ['isUserSignedIn']),
-    ...mapState(useLibraryStore, ['albums', 'albumCount', 'shownAlbumCount', 'isFetching']),
-    ...mapWritableState(useLibraryStore, ['page', 'pageSize', 'sortBy']),
-    ...mapWritableState(useModalStore, ['album'])
   },
   methods: {
     ...mapActions(useUserStore, ['signIn']),
@@ -231,7 +247,7 @@ export default {
     },
 
     handleExpandRow(event, { item }) {
-      this.expandedRow = this.expandedRow.includes(item.value) ? [] : [item.value]
+      this.expandedRow = this.expandedRow.includes(item.id) ? [] : [item.id]
     }
   }
 }
