@@ -1,14 +1,6 @@
 <template>
-  <main>
-    <v-container fluid>
-      <v-row justify="center">
-        <v-col cols="7">
-          <album-filter />
-          <album-table />
-        </v-col>
-      </v-row>
-    </v-container>
-  </main>
+  <album-filter />
+  <album-table />
   <album-modal />
 </template>
 
