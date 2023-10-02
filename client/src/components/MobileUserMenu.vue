@@ -1,0 +1,87 @@
+<template>
+  <v-navigation-drawer temporary v-model="show">
+    <v-list>
+      <v-list-item :title="username">
+        <template v-slot:prepend>
+          <v-avatar v-if="isUserSignedIn"> <v-img :src="profilePicture" /> </v-avatar>
+        </template>
+      </v-list-item>
+    </v-list>
+    <v-divider />
+
+    <v-list>
+      <v-list-item prepend-icon="mdi-home-account" title="Home" :to="{ name: 'home' }" />
+      <v-list-item
+        prepend-icon="mdi-format-list-bulleted"
+        title="Top 500 RS 1"
+        :to="{ name: 'topRS1' }"
+      />
+      <v-list-item
+        prepend-icon="mdi-format-list-bulleted"
+        title="Top 500 RS 3"
+        :to="{ name: 'topRS3' }"
+      />
+    </v-list>
+    <v-divider />
+    <v-list>
+      <v-list-item title="Language">
+        <template v-slot:append>
+          <v-btn-toggle
+            v-model="$i18n.locale"
+            color="deep-purple-accent-3"
+            density="compact"
+            class="d-flex align-center"
+          >
+            <v-btn value="en" height="28" variant="outlined" size="x-small">
+              <v-img width="20" :src="langFlags.en" />
+            </v-btn>
+            <v-btn value="es" height="28" variant="outlined" size="x-small">
+              <v-img width="20" :src="langFlags.es" />
+            </v-btn>
+          </v-btn-toggle>
+        </template>
+      </v-list-item>
+    </v-list>
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn block text="Log out" prepend-icon="mdi-power" />
+      </div>
+    </template>
+  </v-navigation-drawer>
+</template>
+
+<script>
+import esFlag from '@/assets/flags/es.svg'
+import gbFlag from '@/assets/flags/gb.svg'
+import { mapActions, mapState } from 'pinia'
+import { useUserStore } from '@/stores/user'
+
+export default {
+  name: 'MobileUserMenu',
+  props: {
+    modelValue: Boolean
+  },
+  data() {
+    return {
+      langFlags: { es: esFlag, en: gbFlag }
+    }
+  },
+  computed: {
+    ...mapState(useUserStore, ['id', 'username', 'profilePicture', 'isUserSignedIn']),
+
+    show: {
+      get() {
+        return this.modelValue
+      },
+      set(value) {
+        return this.$emit('update:modelValue', value)
+      }
+    }
+  },
+  methods: {
+    ...mapActions(useUserStore, ['signIn', 'signOutUser'])
+  }
+}
+</script>
+
+<style scoped></style>
