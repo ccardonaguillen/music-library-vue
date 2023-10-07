@@ -22,6 +22,9 @@
       <div>
         <h3 class="text-decoration-underline mb-2">General info</h3>
         <div class="extra-info-container">
+          <p class="font-weight-bold">{{ $t('fields.released.long') }}</p>
+          <p>{{ album.released || '-' }}</p>
+
           <p class="font-weight-bold">{{ $t('fields.owned') }}</p>
           <p>{{ $t(album.owned ? 'common.yes' : 'common.no') }}</p>
 
@@ -129,7 +132,7 @@ export default {
 
 .extra-info-container {
   display: grid;
-  grid-template-columns: minmax(auto, 150px) 1fr;
+  grid-template-columns: minmax(auto, 120px) 1fr;
   column-gap: 12px;
 }
 
