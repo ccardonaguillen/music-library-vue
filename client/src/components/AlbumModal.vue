@@ -163,7 +163,11 @@
             />
           </div>
         </component>
-        <component :is="$vuetify.display.xs ? 'div' : 'fieldset'" class="pa-0 px-sm-5 py-sm-4">
+        <component
+          :is="$vuetify.display.xs ? 'div' : 'fieldset'"
+          class="pa-0 px-sm-5 py-sm-4 mt-sm-4"
+          v-if="album.owned"
+        >
           <h3 class="text-decoration-underline sticky-header" v-if="$vuetify.display.xs">
             {{ $t('albumModal.fieldsets.record') }}
           </h3>
@@ -354,13 +358,13 @@ export default {
       if (album) this.album = album
     },
 
-    async submitAlbum() {
+    submitAlbum() {
       if (this.isEditing) {
         const { id, ...albumInfo } = this.album
-        await this.editAlbum(id, albumInfo)
-      } else await this.addAlbum(this.album)
+        this.editAlbum(id, albumInfo)
+      } else this.addAlbum(this.album)
 
-      await this.closeModal()
+      this.closeModal()
     }
   }
 }
