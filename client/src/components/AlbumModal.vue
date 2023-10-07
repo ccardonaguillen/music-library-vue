@@ -14,7 +14,7 @@
         @click="closeModal"
       />
       <h2 class="mb-3">{{ $t(`albumModal.title.${isEditing ? 'edit' : 'new'}`) }}</h2>
-      <p>{{ $t('albumModal.hero') }}</p>
+      <p class="mb-1">{{ $t('albumModal.hero') }}</p>
       <v-text-field
         v-model="discogsId"
         :label="$t('albumModal.placeholders.discogs')"
@@ -387,7 +387,7 @@ export default {
 
     async fetchAlbum() {
       const album = await fetchRelease(this.discogsId)
-      if (album) this.album = album
+      if (album) this.album = { ...this.album, ...album }
     },
 
     correctAlbumInputTypes() {
@@ -412,6 +412,17 @@ export default {
       } else this.addAlbum(albumInfo)
 
       this.closeModal()
+    }
+  },
+  watch: {
+    show(newVal) {
+      if (newVal) {
+        if (this.album.discogs) {
+          const regex = /^https:\/\/www.discogs.com\/es\/release\/(\d+)/
+          const match = this.album.discogs.match(regex)
+          this.discogsId = match[1]
+        }
+      }
     }
   }
 }

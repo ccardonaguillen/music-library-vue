@@ -12,8 +12,7 @@ async function fetchRelease(release_id) {
 }
 
 function parseAlbum(json) {
-  const { id, title, artists, released, genres, formats, labels, year, country } = json
-
+  const { title, artists, released, genres, formats, labels, year, country, uri } = json
   const genresMap = {
     Rock: 'rock',
     Electronic: 'electronic',
@@ -36,7 +35,7 @@ function parseAlbum(json) {
     artist: artists[0].name,
     released: parseInt(released.slice(0, 4)),
     genre: genres.map((genre) => genresMap[genre]),
-    discogs: 'https://www.discogs.com/es/release/' + id,
+    discogs: uri,
     record_format: formats[0].descriptions.filter((f) => ['LP', 'EP', 'Single'].includes(f)),
     album_format: formats[0].name,
     catalog_num: labels[0].catno,
