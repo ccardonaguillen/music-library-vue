@@ -1,10 +1,16 @@
 <template>
   <v-navigation-drawer width="300" temporary v-model="show">
     <v-list>
-      <v-list-item :title="username" :subtitle="email">
+      <v-list-item :title="username" :subtitle="email" v-if="isUserSignedIn">
         <template v-slot:prepend>
-          <v-avatar v-if="isUserSignedIn"> <v-img :src="profilePicture" /> </v-avatar>
+          <v-avatar> <v-img :src="profilePicture" /> </v-avatar>
         </template>
+      </v-list-item>
+      <v-list-item @click="signIn" v-else>
+        <template v-slot:prepend>
+          <v-icon size="40" class="mr-n5" icon="mdi-account-circle" />
+        </template>
+        {{ $t('controls.googleSignIn') }}
       </v-list-item>
     </v-list>
     <v-divider />
@@ -46,8 +52,8 @@
         </template>
       </v-list-item>
     </v-list>
-    <template v-slot:append>
-      <div class="pa-2">
+    <template v-slot:append v-if="isUserSignedIn">
+      <div class="px-2 py-4">
         <v-btn
           block
           :text="$t('controls.logout')"
