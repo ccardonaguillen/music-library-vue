@@ -50,7 +50,8 @@
     "condition": "Condition",
     "nDisk": "Disks",
     "notes": "Notes",
-    "format": "Formato"
+    "format": "Formato",
+    "location": "Location"
   },
   "common": {
     "exampleAbbr": "e.g. ",
@@ -113,7 +114,8 @@
     "placeholders": {
       "discogs": "Discogs release ID",
       "genre": "Choose a genre",
-      "notes": "Here goes any other info related to the record"
+      "notes": "Here goes any other info related to the record",
+      "location": "Where is the record stored?"
     }
   },
   "optionsModal": {

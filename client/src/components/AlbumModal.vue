@@ -308,6 +308,15 @@
             </v-row>
           </v-container>
           <div>
+            <label>{{ this.$t('fields.location') }}</label>
+            <v-text-field
+              v-model="album.location"
+              variant="outlined"
+              density="compact"
+              :placeholder="$t('albumModal.placeholders.location')"
+            />
+          </div>
+          <div>
             <label>{{ this.$t('fields.notes') }}</label>
             <v-text-field
               v-model="album.notes"

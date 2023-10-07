@@ -26,7 +26,10 @@
           <p>{{ album.released || '-' }}</p>
 
           <p class="font-weight-bold">{{ $t('fields.owned') }}</p>
-          <p>{{ $t(album.owned ? 'common.yes' : 'common.no') }}</p>
+          <p>
+            {{ $t(album.owned ? 'common.yes' : 'common.no')
+            }}{{ album.location ? ` (${album.location})` : '' }}
+          </p>
 
           <p class="font-weight-bold">{{ $t('fields.favorite') }}</p>
           <p>{{ $t(album.favorite ? 'common.yes' : 'common.no') }}</p>

@@ -52,7 +52,7 @@ function mapCollectionProps(collection) {
   const propsMap = {
     title: 'Nombre',
     artist: 'Artista',
-    released: 'Año lanzamiento',
+    released: 'Lanzamiento',
     owned: 'Adquirido',
     favorite: 'Favoritos',
     topRS1: 'Top 500 (RS1)',
@@ -62,15 +62,16 @@ function mapCollectionProps(collection) {
     wikipedia: 'Link Wikipedia',
     record_format: 'Formato',
     album_format: 'Formato vinilo',
-    catalog_num: 'Nº Serie',
-    edition: 'Año edición',
+    catalog_num: 'N Serie',
+    edition: 'Edicion',
     country: 'Pais Edicion',
     label: 'Discografica',
     matrix: 'Matriz',
     condition: 'Estado',
     notes: 'Observaciones',
     jacket: 'Caratula',
-    nDisks: 'nº discos'
+    location: 'Ubicacion',
+    nDisks: 'n discos'
   }
 
   return collection.map((entry) =>
@@ -124,8 +125,8 @@ function parseGenre(value) {
     { genre: 'hipHop', regex: /(hip hop|rap)/i },
     { genre: 'latin', regex: /(latin|bossa|flamenco|bachata|merengue|salsa)/i },
     { genre: 'stage', regex: /(stage|banda sonora|cine)/i },
-    { genre: 'reggae', regex: /(reggae|)/i },
-    { genre: 'children', regex: /(children|)/i },
+    { genre: 'reggae', regex: /(reggae)/i },
+    { genre: 'children', regex: /(children)/i },
     { genre: 'military', regex: /(militar|brass)/i }
   ]
 

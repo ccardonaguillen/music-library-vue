@@ -158,6 +158,7 @@ export const useLibraryStore = defineStore('library', {
       const fileContent = e.target.result
       const collection = parseCollection(fileContent)
 
+      // console.log(collection)
       await Promise.all(collection.map((info) => this.addAlbum(info, false)))
       await this.fetchLibrary()
     }

@@ -50,7 +50,8 @@
     "condition": "Estado",
     "nDisk": "Discos",
     "notes": "Observaciones",
-    "format": "Formato"
+    "format": "Formato",
+    "location": "Ubicación"
   },
   "common": {
     "exampleAbbr": "p. ej. ",
@@ -113,7 +114,8 @@
     "placeholders": {
       "discogs": "Discogs release ID",
       "genre": "Selecciona un género",
-      "notes": "Introduce aquí cualquier otra información adicional"
+      "notes": "Introduce aquí cualquier otra información adicional",
+      "location": "¿Dónde esta almacenado el disco?"
     }
   },
   "optionsModal": {
