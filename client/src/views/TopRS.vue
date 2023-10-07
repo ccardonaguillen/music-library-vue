@@ -8,10 +8,15 @@
         :label="$t('controls.hideOwned')"
         style="flex: 1"
       />
-      <h2 style="justify-self: center">Top Rolling Stones {{ number }}</h2>
+      <h2 style="justify-self: center">Top Rolling Stones {{ topRSNumber }}</h2>
     </div>
     <div class="cards-container">
-      <top-r-s-album-card :album="album" v-for="album in topRSAlbums" :key="album.id" />
+      <top-r-s-album-card
+        :album="album"
+        :top-r-s-number="topRSNumber"
+        v-for="album in topRSAlbums"
+        :key="album.id"
+      />
     </div>
   </v-col>
 </template>
@@ -35,7 +40,7 @@ export default {
   name: 'TopRS',
   components: { TopRSAlbumCard },
   props: {
-    number: {
+    topRSNumber: {
       type: Number,
       required: true
     }
@@ -60,13 +65,13 @@ export default {
       this.isFetching = true
       const libraryRef = collection(getFirestore(), this.userId)
 
-      const filters = [where(`topRS${this.number}`, '!=', '')]
+      const filters = [where(`topRS${this.topRSNumber}`, '!=', '')]
       if (this.hideOwned) filters.push(where('owned', '==', false))
 
       const q = query(
         libraryRef,
         ...filters,
-        orderBy(`topRS${this.number}`, 'asc'),
+        orderBy(`topRS${this.topRSNumber}`, 'asc'),
         startAt((this.page - 1) * this.pageSize),
         limit(this.pageSize)
       )

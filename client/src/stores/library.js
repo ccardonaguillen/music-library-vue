@@ -115,7 +115,7 @@ export const useLibraryStore = defineStore('library', {
 
     async filterLibrary() {},
 
-    async addAlbum(albumInfo, refresh) {
+    async addAlbum(albumInfo, refresh = true) {
       const q = await this.findAlbum(albumInfo)
       const snapshot = await getCountFromServer(q)
       if (snapshot.data().count) {
@@ -139,6 +139,7 @@ export const useLibraryStore = defineStore('library', {
     },
 
     async editAlbum(albumId, albumInfo) {
+      console.log(albumInfo)
       const albumRef = doc(getFirestore(), useUserStore().id, albumId)
       await updateDoc(albumRef, albumInfo)
       await this.fetchLibrary()
@@ -158,7 +159,7 @@ export const useLibraryStore = defineStore('library', {
       const fileContent = e.target.result
       const collection = parseCollection(fileContent)
 
-      await Promise.all(collection.map((info) => this.addAlbum(info)))
+      await Promise.all(collection.map((info) => this.addAlbum(info, false)))
       await this.fetchLibrary()
     }
   }

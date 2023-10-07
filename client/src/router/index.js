@@ -14,13 +14,13 @@ const router = createRouter({
       path: '/top-rs1',
       name: 'topRS1',
       component: TopRS,
-      props: { number: 1 }
+      props: { topRSNumber: 1 }
     },
     {
       path: '/top-rs3',
       name: 'topRS3',
       component: TopRS,
-      props: { number: 3 }
+      props: { topRSNumber: 3 }
     }
   ]
 })

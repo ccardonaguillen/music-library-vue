@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="2" variant="elevated" class="d-flex flex-column justify-space-between">
     <v-chip size="default" variant="tonal" color="primary" class="topPos font-weight-bold">
-      {{ album.topRS1 }}
+      {{ album[`topRS${topRSNumber}`] }}
     </v-chip>
 
     <div class="d-flex flex-column align-start">
@@ -63,7 +63,8 @@
 export default {
   name: 'TopRSAlbumCard',
   props: {
-    album: Object
+    album: Object,
+    topRSNumber: Number
   }
 }
 </script>
