@@ -139,7 +139,6 @@ export const useLibraryStore = defineStore('library', {
     },
 
     async editAlbum(albumId, albumInfo) {
-      console.log(albumInfo)
       const albumRef = doc(getFirestore(), useUserStore().id, albumId)
       await updateDoc(albumRef, albumInfo)
       await this.fetchLibrary()
