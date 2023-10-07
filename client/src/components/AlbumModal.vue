@@ -68,6 +68,8 @@
               v-model="album.genre"
               variant="outlined"
               density="compact"
+              multiple
+              :items="genreSelectItems"
               :placeholder="$t('albumModal.placeholders.genre')"
             />
           </div>
@@ -176,14 +178,14 @@
           </legend>
 
           <div>
-            <label>{{ $t('albumModal.labels.record') }}</label>
-            <v-container>
+            <label>{{ $t('fields.recordFormat') }}</label>
+            <v-container class="pt-0">
               <v-row no-gutters>
                 <v-col cols="6">
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    :label="this.$t('fields.recordFormat.vinyl')"
+                    :label="this.$t('fields.recordFormatOptions.vinyl')"
                     value="vinyl"
                     hide-details
                   />
@@ -192,7 +194,7 @@
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    :label="this.$t('fields.recordFormat.cd')"
+                    :label="this.$t('fields.recordFormatOptions.cd')"
                     value="cd"
                     hide-details
                   />
@@ -201,7 +203,7 @@
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    :label="this.$t('fields.recordFormat.cassette')"
+                    :label="this.$t('fields.recordFormatOptions.cassette')"
                     value="cassette"
                     hide-details
                   />
@@ -210,7 +212,7 @@
                   <v-checkbox
                     v-model="album.record_format"
                     density="compact"
-                    :label="this.$t('fields.recordFormat.other')"
+                    :label="this.$t('fields.recordFormatOptions.other')"
                     value="other"
                     hide-details
                   />
@@ -219,12 +221,12 @@
             </v-container>
           </div>
           <div>
-            <label>{{ $t('albumModal.labels.album') }}</label>
+            <label>{{ $t('fields.albumFormat') }}</label>
             <v-radio-group
               v-model="album.album_format"
               :inline="$vuetify.display.smAndUp"
               hide-details
-              class="album-format-container px-3"
+              class="album-format-container px-3 pb-4"
             >
               <v-radio label="EP (Extended Play)" value="ep" />
               <v-radio label="LP (Long Play)" value="lp" />
@@ -333,7 +335,23 @@ export default {
   name: 'AlbumModal',
   data() {
     return {
-      discogsId: null
+      discogsId: null,
+      genres: [
+        'rock',
+        'electronic',
+        'pop',
+        'folk',
+        'jazz',
+        'funk',
+        'classical',
+        'hipHop',
+        'latin',
+        'stage',
+        'reggae',
+        'nonMusic',
+        'children',
+        'military'
+      ]
     }
   },
   computed: {
@@ -343,6 +361,13 @@ export default {
 
     isEditing() {
       return !!this.album.id
+    },
+
+    genreSelectItems() {
+      return this.genres.map((genre) => ({
+        title: this.$t(`fields.genreOptions.${genre}`),
+        value: genre
+      }))
     }
   },
   methods: {
