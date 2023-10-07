@@ -67,15 +67,23 @@
   },
   "header": {
     "title": "Colección Música",
-    "user": {
-      "signIn": "Iniciar Sesión con Google",
-      "signOut": "Cerrar Sesión"
-    }
+    "home": "Inicio"
   },
   "controls": {
-    "entries": "No hay ningún album en la colección. Añade uno usando el botón | Mostrando {displayed} de {total} álbumes | Mostrando {displayed} de {total} álbumes",
+    "entries": "No hay ningún album en la colección. Añade uno usando el botón. | Mostrando {displayed} de {total} álbumes. | Mostrando {displayed} de {total} álbumes.",
     "filters": "Filtros" ,
-    "newAlbum": "Añadir Álbum"
+    "newAlbum": "Añadir Álbum",
+    "placeholder": {
+      "artist": "Ningún artista seleccionado"
+    },
+    "language": "Idioma",
+    "googleSignIn": "Iniciar sesión con Google",
+    "logout": "Cerrar sesión",
+    "uploadLibrary": "Importar colección",
+    "hideOwned": "Ocultar adquiridos",
+    "notOwned": "No adquirido",
+    "inLibrary": "En la colección",
+    "markAsOwned": "Marcar como adquirido"
   },
   "albumModal": {
     "title": {
@@ -113,15 +121,9 @@
     "delete": "Borrar Álbum"
   },
   "table": {
-    "notLogged": {
-      "part1": "No estás registrado. Pulsa el botón en la parte superior o ",
-      "action": "haz click aquí para iniciar sesión",
-      "part2": " y empezar añadir álbumes a tu colección de música."
-    },
-    "noAlbums": {
-      "part1": "No hay ningún álbum en tu colección. ",
-      "action": "Carga una colección"
-    }
+    "pageSelector": "Álbumes por página",
+    "notLogged": "No estás registrado. Inicia sesión y empieza organizar tu colección de música.",
+    "noAlbums": "No hay ningún albúm en tu colección. Importa una o empieza o añade un album para empezar a trabajar."
   },
   "credits": "Diseño y código"
 }

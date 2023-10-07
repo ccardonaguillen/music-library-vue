@@ -19,7 +19,7 @@
         </div>
 
         <div class="d-flex align-center" style="gap: 20px" v-if="$vuetify.display.mdAndUp">
-          <router-link :to="{ name: 'home' }">Home</router-link>
+          <router-link :to="{ name: 'home' }">{{ $t('header.home') }}</router-link>
           <router-link :to="{ name: 'topRS1' }">Top 500 RS1</router-link>
           <router-link :to="{ name: 'topRS3' }">Top 500 RS3</router-link>
         </div>

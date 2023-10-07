@@ -67,15 +67,23 @@
   },
   "header": {
     "title": "Music Library",
-    "user": {
-      "signIn": "Sign In with Google",
-      "signOut": "Sign Out"
-    }
+    "home": "Home"
   },
   "controls": {
-    "entries": "No albums in the library. Add one by clicking the button | Showing {displayed} out of {total} albums | Showing {displayed} out of {total} albums",
+    "entries": "No albums in the library. Add one by clicking the button. | Showing {displayed} out of {total} albums. | Showing {displayed} out of {total} albums.",
     "filters": "Filters",
-    "newAlbum": "New album"
+    "newAlbum": "New album",
+    "placeholder": {
+      "artist": "No artist selected"
+    },
+    "language": "Language",
+    "googleSignIn": "Sign in with Google",
+    "logout": "Log out",
+    "uploadLibrary": "Upload album library",
+    "hideOwned": "Hide owned",
+    "notOwned": "Not owned",
+    "inLibrary": "Owned",
+    "markAsOwned": "Mark as owned"
   },
   "albumModal": {
     "title": {
@@ -113,15 +121,9 @@
     "delete": "Delete Album"
   },
   "table": {
-    "notLogged": {
-      "part1": "You are not currently logged in. Use the button at the top of the page or ",
-      "action": "click here to log in",
-      "part2": "and start adding albums."
-    },
-    "noAlbums": {
-      "part1": "There are currently no albums in your music library. ",
-      "action": "Upload a collection"
-    }
+    "pageSelector": "Albums per page",
+    "notLogged": "You are currently not logged in. Sign in to start managing your music library.",
+    "noAlbums": "There are currently no albums in your music library. Upload a collection or add one to start managing it."
   },
   "credits": "Design and code"
 }

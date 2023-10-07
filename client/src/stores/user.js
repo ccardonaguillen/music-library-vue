@@ -21,7 +21,8 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     id: null,
     username: null,
-    profilePicture: null
+    profilePicture: null,
+    email: null
   }),
 
   getters: {
@@ -40,7 +41,7 @@ export const useUserStore = defineStore('user', {
       await signInWithPopup(getAuth(), provider)
     },
 
-    signOutUser() {
+    logOutUser() {
       // Sign out of Firebase.
       signOut(getAuth())
     },
@@ -52,6 +53,7 @@ export const useUserStore = defineStore('user', {
         this.id = user?.uid
         this.username = user?.displayName
         this.profilePicture = user?.photoURL
+        this.email = user?.email
 
         if (user) {
           library.fetchLibrary()

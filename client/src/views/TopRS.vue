@@ -5,7 +5,7 @@
         hide-details
         v-model="hideOwned"
         color="primary"
-        label="Ocultar adquiridos"
+        :label="$t('controls.hideOwned')"
         style="flex: 1"
       />
       <h2 style="justify-self: center">Top Rolling Stones {{ number }}</h2>

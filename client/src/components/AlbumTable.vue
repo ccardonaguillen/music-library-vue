@@ -9,29 +9,28 @@
     :items="albums"
     :items-length="shownAlbumCount"
     :loading="isFetching"
-    :items-per-page-text="'Albums per page'"
+    :items-per-page-text="$t('table.pageSelector')"
     class="table-striped"
     @update:options="fetchLibrary"
     @click:row="handleExpandRow"
   >
     <template v-slot:no-data>
       <div class="d-flex flex-column align-center mt-4 mb-8" v-if="!isUserSignedIn">
-        You are currently not logged in. Sign to start managing your music library.
+        {{ $t('table.notLogged') }}
         <v-btn
           color="primary"
-          text="Sign in with google"
+          :text="$t('controls.googleSignIn')"
           prepend-icon="mdi-google"
           class="mt-4"
           @click="signIn"
         />
       </div>
       <div class="d-flex flex-column align-center mt-4 mb-8" v-else-if="!albumCount">
-        There are currently no albums in your music library. Upload a collection from your computer
-        or use the "New Album" button.
+        {{ $t('table.noAlbums') }}
         <div class="d-flex mt-4" style="gap: 12px">
           <v-btn
             color="primary"
-            text="Import album library"
+            :text="$t('controls.uploadLibrary')"
             prepend-icon="mdi-album"
             @click="$refs.importLibrary.click()"
           />
@@ -42,7 +41,12 @@
             @change="onLibraryUploaded"
           />
 
-          <v-btn color="primary" text="Add new album" prepend-icon="mdi-plus" @click="openModal" />
+          <v-btn
+            color="primary"
+            :text="$t('controls.newAlbum')"
+            prepend-icon="mdi-plus"
+            @click="openModal"
+          />
         </div>
       </div>
       <div class="mt-4 mb-8" v-else>No albums found that match the current filters</div>

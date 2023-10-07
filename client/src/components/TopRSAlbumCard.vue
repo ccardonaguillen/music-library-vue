@@ -43,19 +43,17 @@
         class="align-self-center my-4"
         prepend-icon="mdi-check"
         color="success"
+        :text="$t('controls.inLibrary')"
         v-if="album.owned"
-      >
-        En la colección
-      </v-chip>
+      />
       <v-hover v-slot="{ isHovering, props }" v-else>
         <v-chip
           v-bind="props"
           class="align-self-center my-4"
           :prepend-icon="isHovering ? 'mdi-check' : 'mdi-close'"
+          :text="$t(`controls.${isHovering ? 'markAsOwned' : 'notOwned'}`)"
           :variant="isHovering ? 'tonal' : 'outlined'"
-        >
-          {{ isHovering ? 'Marcar como adquirido' : 'No adquirido' }}
-        </v-chip>
+        />
       </v-hover>
     </div>
   </v-card>

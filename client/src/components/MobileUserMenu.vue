@@ -1,7 +1,7 @@
 <template>
-  <v-navigation-drawer temporary v-model="show">
+  <v-navigation-drawer width="300" temporary v-model="show">
     <v-list>
-      <v-list-item :title="username">
+      <v-list-item :title="username" :subtitle="email">
         <template v-slot:prepend>
           <v-avatar v-if="isUserSignedIn"> <v-img :src="profilePicture" /> </v-avatar>
         </template>
@@ -10,7 +10,11 @@
     <v-divider />
 
     <v-list>
-      <v-list-item prepend-icon="mdi-home-account" title="Home" :to="{ name: 'home' }" />
+      <v-list-item
+        prepend-icon="mdi-home-account"
+        :title="$t('header.home')"
+        :to="{ name: 'home' }"
+      />
       <v-list-item
         prepend-icon="mdi-format-list-bulleted"
         title="Top 500 RS 1"
@@ -24,7 +28,7 @@
     </v-list>
     <v-divider />
     <v-list>
-      <v-list-item title="Language">
+      <v-list-item :title="$t('controls.language')">
         <template v-slot:append>
           <v-btn-toggle
             v-model="$i18n.locale"
@@ -44,7 +48,13 @@
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block text="Log out" prepend-icon="mdi-power" color="primary" />
+        <v-btn
+          block
+          :text="$t('controls.logout')"
+          prepend-icon="mdi-power"
+          color="primary"
+          @click="logOutUser"
+        />
       </div>
     </template>
   </v-navigation-drawer>
@@ -67,7 +77,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(useUserStore, ['id', 'username', 'profilePicture', 'isUserSignedIn']),
+    ...mapState(useUserStore, ['id', 'username', 'email', 'profilePicture', 'isUserSignedIn']),
 
     show: {
       get() {
@@ -79,7 +89,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signIn', 'signOutUser'])
+    ...mapActions(useUserStore, ['signIn', 'logOutUser'])
   }
 }
 </script>

@@ -16,7 +16,7 @@
           density="compact"
           variant="outlined"
           rounded
-          placeholder="No artist selected"
+          :placeholder="$t('controls.placeholder.artist')"
         />
       </div>
 

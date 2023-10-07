@@ -20,7 +20,7 @@
         </v-btn-toggle>
       </div>
       <v-divider class="my-4 mx-3" />
-      <v-list-item density="compact" @click="signOutUser" v-if="isUserSignedIn">
+      <v-list-item density="compact" @click="logOutUser" v-if="isUserSignedIn">
         <v-icon icon="mdi-power" />
         Log out
       </v-list-item>
@@ -49,7 +49,7 @@ export default {
     ...mapState(useUserStore, ['id', 'username', 'profilePicture', 'isUserSignedIn'])
   },
   methods: {
-    ...mapActions(useUserStore, ['signIn', 'signOutUser'])
+    ...mapActions(useUserStore, ['signIn', 'logOutUser'])
   }
 }
 </script>
