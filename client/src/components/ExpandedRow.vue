@@ -50,7 +50,7 @@
         <h3 class="text-decoration-underline mb-1">Record info</h3>
         <div class="extra-info-container">
           <p class="font-weight-bold">Record Format(s)</p>
-          <p>{{ album.record_format || '-' }}</p>
+          <p>{{ albumFormats || '-' }}</p>
 
           <p class="font-weight-bold">Album Format</p>
           <p>{{ album.album_format || '-' }}</p>
@@ -102,6 +102,15 @@ export default {
   name: 'ExpandedRow',
   props: {
     album: Object
+  },
+  computed: {
+    albumFormats() {
+      return this.album.record_format
+        ? this.album.record_format
+            .map((format) => this.$t(`fields.recordFormat.${format}`))
+            .join(', ')
+        : '-'
+    }
   }
 }
 </script>
@@ -109,7 +118,7 @@ export default {
 <style scoped>
 .expanded-row-container :deep(.v-card-text) {
   display: grid;
-  grid-template-columns: clamp(20vw, 250px, 80vw) min-content 1fr min-content 2fr;
+  grid-template-columns: clamp(250px, 300px, 20vw) min-content 1fr min-content 2fr;
   column-gap: 16px;
 }
 
@@ -125,8 +134,8 @@ a:visited {
 
 .placeholder-img {
   justify-self: center;
-  height: clamp(20vw, 250px, 80vw);
-  width: clamp(20vw, 250px, 80vw);
+  height: clamp(250px, 300px, 20vw);
+  width: clamp(250px, 300px, 20vw);
 }
 
 @media screen and (max-width: 600px) {
