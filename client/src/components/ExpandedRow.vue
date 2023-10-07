@@ -78,7 +78,7 @@
         </div>
       </div>
     </template>
-    <template v-slot:actions>
+    <template v-slot:actions v-if="$vuetify.display.xs">
       <v-spacer />
 
       <v-btn
