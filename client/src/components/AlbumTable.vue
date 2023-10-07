@@ -47,7 +47,7 @@
       </div>
       <div class="mt-4 mb-8" v-else>No albums found that match the current filters</div>
     </template>
-    <template v-slot:[`item.options`]="{ item: { raw, value } }">
+    <template v-slot:[`item.options`]="{ item }">
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn variant="flat" density="compact" icon="mdi-dots-vertical" v-bind="props" />
@@ -57,12 +57,12 @@
             <v-list-item
               prepend-icon="mdi-file-document-edit-outline"
               title="Edit Album"
-              @click="onAlbumEdited(raw)"
+              @click="onAlbumEdited(item)"
             />
             <v-list-item
               prepend-icon="mdi-file-document-remove-outline"
               title="Delete Album"
-              @click="removeAlbum(value)"
+              @click="removeAlbum(item.id)"
             />
           </v-list>
         </v-card>
