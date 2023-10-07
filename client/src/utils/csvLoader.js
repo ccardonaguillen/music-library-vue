@@ -58,6 +58,7 @@ function mapCollectionProps(collection) {
     topRS1: 'Top 500 (RS1)',
     topRS3: 'Top 500 (RS3)',
     discogs: 'Link Discogs',
+    genre: 'Genero',
     wikipedia: 'Link Wikipedia',
     record_format: 'Formato',
     album_format: 'Formato vinilo',
@@ -92,15 +93,11 @@ function mapCollectionProps(collection) {
           propValue = entry[value] ? entry[value].slice(1, -1) : ''
           break
         case 'record_format': {
-          const vinylRegex = /(vinil|vinyl)/i
-          const cdRegex = /(cd)/i
-          const cassetteRegex = /(casete|cassette)/i
-
-          propValue = []
-          if (vinylRegex.test(entry[value])) propValue.push('vinyl')
-          if (cdRegex.test(entry[value])) propValue.push('cd')
-          if (cassetteRegex.test(entry[value])) propValue.push('cassette')
-
+          propValue = parseRecordFormat(entry[value])
+          break
+        }
+        case 'genre': {
+          propValue = parseGenre(entry[value])
           break
         }
         default:
@@ -111,6 +108,48 @@ function mapCollectionProps(collection) {
       return { ...acc, [key]: propValue }
     }, {})
   )
+}
+
+function parseGenre(value) {
+  const genreRegex = [
+    { genre: 'rock', regex: /(rock|punk|metal)/i },
+    { genre: 'electronic', regex: /(electronic|house|dance|techno|electro|synth|new wave)/i },
+    { genre: 'pop', regex: /(pop)/i },
+    { genre: 'folk', regex: /(folk|country|bossa|flamenco|gospel|trova)/i },
+    { genre: 'jazz', regex: /(jazz|swing)/i },
+    { genre: 'funk', regex: /(funk|soul|blues|r&b)/i },
+    { genre: 'classical', regex: /(classical|clasica)/i },
+    { genre: 'hipHop', regex: /(hip hop|rap)/i },
+    { genre: 'latin', regex: /(latin|bossa|flamenco|bachata|merengue|salsa)/i },
+    { genre: 'stage', regex: /(stage|banda sonora|cine)/i },
+    { genre: 'reggae', regex: /(reggae|)/i },
+    { genre: 'children', regex: /(children|)/i },
+    { genre: 'military', regex: /(militar|brass)/i }
+  ]
+
+  let genreArray = []
+  genreRegex.forEach(({ genre, regex }) => {
+    if (regex.test(value)) genreArray.push(genre)
+  })
+
+  const uniqueGenres = [...new Set(genreArray)]
+
+  return uniqueGenres
+}
+
+function parseRecordFormat(value) {
+  const formatRegex = [
+    { format: 'vinyl', regex: /(vinil|vinyl)/i },
+    { format: 'cd', regex: /(cd)/i },
+    { format: 'cassette', regex: /(casete|cassette)/i }
+  ]
+
+  let formatArray = []
+  formatRegex.forEach(({ format, regex }) => {
+    if (regex.test(value)) formatArray.push(format)
+  })
+
+  return formatArray
 }
 
 export { parseCollection }
