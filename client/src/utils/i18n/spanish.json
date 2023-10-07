@@ -28,7 +28,9 @@
     "wikipedia": "Página Wikipedia",
     "discogs": "Enlace Discogs",
     "jacket": "Carátula",
-    "recordFormat": {
+    "albumFormat": "Formato Álbum",
+    "recordFormat": "Formato(s) Grabación",
+    "recordFormatOptions": {
       "vinyl": "Vinilo",
       "cd": "CD",
       "cassette": "Casete",
@@ -99,9 +101,7 @@
       "owned": "¿Tienes una copia?",
       "favorite": "¿Añadir a favoritos?",
       "wikipedia": "Artículo Wikipedia",
-      "discogs": "Enlace Discogs",
-      "record": "Formato(s) Grabación",
-      "album": "Tipo Álbum"
+      "discogs": "Enlace Discogs"
     },
     "buttons": {
       "load": "Cargar Datos",

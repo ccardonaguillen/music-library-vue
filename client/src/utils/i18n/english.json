@@ -28,7 +28,9 @@
     "wikipedia": "Wikipedia Page",
     "discogs": "Discogs Link",
     "jacket": "Album Jacket",
-    "recordFormat": {
+    "albumFormat": "Album Format",
+    "recordFormat": "Record Format(s)",
+    "recordFormatOptions": {
       "vinyl": "Vinyl",
       "cd": "CD",
       "cassette": "Cassette",
@@ -99,9 +101,7 @@
       "owned": "Do you own a copy?",
       "favorite": "Mark as favorite?",
       "wikipedia": "Wikipedia Page",
-      "discogs": "Discogs Link",
-      "record": "Record Format(s)",
-      "album": "Album Format"
+      "discogs": "Discogs Link"
     },
     "buttons": {
       "load": "Load Info",

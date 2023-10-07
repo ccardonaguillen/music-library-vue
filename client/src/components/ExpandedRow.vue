@@ -20,16 +20,16 @@
       <v-divider :vertical="$vuetify.display.smAndUp" />
 
       <div>
-        <h3 class="text-decoration-underline mb-1">General info</h3>
+        <h3 class="text-decoration-underline mb-2">General info</h3>
         <div class="extra-info-container">
           <p class="font-weight-bold">{{ $t('fields.owned') }}</p>
-          <p>{{ album.owned || '-' }}</p>
+          <p>{{ $t(album.owned ? 'common.yes' : 'common.no') }}</p>
 
           <p class="font-weight-bold">{{ $t('fields.favorite') }}</p>
-          <p>{{ album.favorite || '-' }}</p>
+          <p>{{ $t(album.favorite ? 'common.yes' : 'common.no') }}</p>
 
           <p class="font-weight-bold">{{ $t('fields.genre') }}</p>
-          <p>{{ album.genre || '-' }}</p>
+          <p>{{ genres }}</p>
 
           <p class="font-weight-bold">Top 500 RS1</p>
           <p>{{ album.topRS1 || '-' }}</p>
@@ -47,12 +47,12 @@
       <v-divider :vertical="$vuetify.display.smAndUp" />
 
       <div>
-        <h3 class="text-decoration-underline mb-1">Record info</h3>
+        <h3 class="text-decoration-underline mb-2">Record info</h3>
         <div class="extra-info-container">
-          <p class="font-weight-bold">Record Format(s)</p>
+          <p class="font-weight-bold">{{ $t('fields.recordFormat') }}</p>
           <p>{{ albumFormats || '-' }}</p>
 
-          <p class="font-weight-bold">Album Format</p>
+          <p class="font-weight-bold">{{ $t('fields.albumFormat') }}</p>
           <p>{{ album.album_format || '-' }}</p>
 
           <p class="font-weight-bold">{{ $t('fields.catalogNum.long') }}</p>
@@ -107,8 +107,13 @@ export default {
     albumFormats() {
       return this.album.record_format
         ? this.album.record_format
-            .map((format) => this.$t(`fields.recordFormat.${format}`))
+            .map((format) => this.$t(`fields.recordFormatOptions.${format}`))
             .join(', ')
+        : '-'
+    },
+    genres() {
+      return this.album.genre
+        ? this.album.genre.map((genre) => this.$t(`fields.genreOptions.${genre}`)).join(', ')
         : '-'
     }
   }
@@ -118,7 +123,7 @@ export default {
 <style scoped>
 .expanded-row-container :deep(.v-card-text) {
   display: grid;
-  grid-template-columns: clamp(250px, 300px, 20vw) min-content 1fr min-content 2fr;
+  grid-template-columns: clamp(250px, 300px, 20vw) min-content 3fr min-content 4fr;
   column-gap: 16px;
 }
 

@@ -60,12 +60,12 @@
           <v-list density="comfortable">
             <v-list-item
               prepend-icon="mdi-file-document-edit-outline"
-              title="Edit Album"
+              :title="$t('optionsModal.edit')"
               @click="onAlbumEdited(item)"
             />
             <v-list-item
               prepend-icon="mdi-file-document-remove-outline"
-              title="Delete Album"
+              :title="$t('optionsModal.delete')"
               @click="removeAlbum(item.id)"
             />
           </v-list>
