@@ -1,50 +1,46 @@
 <template>
-  <v-card class="d-flex align-center px-2 py-2" variant="outlined">
-    <v-chip color="white" size="small" variant="elevated" class="topPos font-weight-bold">{{
-      album.topRS1
-    }}</v-chip>
-    <v-img
-      :src="album.jacket"
-      width="200"
-      max-width="200"
-      class="mr-4 rounded"
-      v-if="album.jacket"
-    />
-    <v-card
-      flat
-      color="blue-grey-lighten-5"
-      width="200"
-      height="200"
-      class="d-flex align-center justify-center mr-4 rounded"
-      v-else
-    >
-      <v-icon icon="mdi-cancel" size="40"></v-icon>
-    </v-card>
+  <v-card elevation="2" variant="elevated" class="d-flex flex-column justify-space-between">
+    <v-chip size="default" variant="tonal" color="primary" class="topPos font-weight-bold">
+      {{ album.topRS1 }}
+    </v-chip>
+
     <div class="d-flex flex-column align-start">
-      <div class="album-info-container">
-        <p class="font-weight-bold text-body-1">{{ $t('fields.title') }}</p>
-        <p class="text-body-1">{{ album.title }}</p>
+      <v-card-title class="pb-0" style="width: calc(100% - 45px)"> {{ album.title }}</v-card-title>
+      <v-card-subtitle> {{ album.artist }}</v-card-subtitle>
 
-        <p class="font-weight-bold text-body-1">{{ $t('fields.artist') }}</p>
-        <p class="text-body-1">{{ album.artist }}</p>
-
-        <p class="font-weight-bold text-body-1">{{ $t('fields.released.long') }}</p>
-        <p class="text-body-1">{{ album.released }}</p>
-
-        <p class="font-weight-bold text-body-1">{{ $t('fields.label') }}</p>
-        <p class="text-body-1">{{ album.label }}</p>
-
-        <p class="font-weight-bold text-body-1">{{ $t('fields.country') }}</p>
-        <p class="text-body-1">{{ album.country }}</p>
-
-        <p class="font-weight-bold text-body-1">{{ $t('fields.edition.long') }}</p>
-        <p class="text-body-1">{{ album.edition }}</p>
-
-        <p class="font-weight-bold text-body-1">{{ $t('fields.catalogNum.long') }}</p>
-        <p class="text-body-1">{{ album.catalog_num }}</p>
+      <div class="my-4 align-self-center">
+        <v-img :src="album.jacket" width="200" class="rounded" v-if="album.jacket" />
+        <v-card
+          flat
+          color="blue-grey-lighten-5"
+          width="200"
+          height="200"
+          class="d-flex align-center justify-center rounded"
+          v-else
+        >
+          <v-icon icon="mdi-cancel" size="40"></v-icon>
+        </v-card>
       </div>
+
+      <v-card-text class="album-info-container py-0">
+        <p class="section-title">{{ $t('fields.released.short') }}</p>
+        <p>{{ album.released }}</p>
+
+        <p class="section-title">{{ $t('fields.label') }}</p>
+        <p>{{ album.label || '-' }}</p>
+
+        <p class="section-title">{{ $t('fields.country') }}</p>
+        <p>{{ album.country || '-' }}</p>
+
+        <p class="section-title">{{ $t('fields.edition.short') }}</p>
+        <p>{{ album.edition || '-' }}</p>
+
+        <p class="section-title">{{ $t('fields.catalogNum.short') }}</p>
+        <p>{{ album.catalog_num || '-' }}</p>
+      </v-card-text>
+
       <v-chip
-        class="align-self-center mt-2"
+        class="align-self-center my-4"
         prepend-icon="mdi-check"
         color="success"
         v-if="album.owned"
@@ -54,7 +50,7 @@
       <v-hover v-slot="{ isHovering, props }" v-else>
         <v-chip
           v-bind="props"
-          class="align-self-center mt-2"
+          class="align-self-center my-4"
           :prepend-icon="isHovering ? 'mdi-check' : 'mdi-close'"
           :variant="isHovering ? 'tonal' : 'outlined'"
         >
@@ -87,10 +83,17 @@ export default {
   text-overflow: ellipsis;
 }
 
+.section-title {
+  font-weight: 600;
+  justify-self: start;
+}
+
 .topPos {
-  z-index: 10;
+  display: flex;
+  justify-content: center;
   position: absolute;
-  top: 18px;
-  left: 16px;
+  top: 8px;
+  right: 8px;
+  min-width: 45px;
 }
 </style>
