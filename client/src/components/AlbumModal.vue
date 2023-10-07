@@ -46,19 +46,21 @@
           </div>
           <div>
             <label>{{ this.$t('fields.artist') }}</label>
-            <v-text-field
+            <v-combobox
               v-model="album.artist"
               variant="outlined"
               density="compact"
+              :items="artists"
               :placeholder="`${$t('common.exampleAbbr')}The Beatles`"
             />
           </div>
           <div>
             <label>{{ this.$t('fields.released.long') }}</label>
             <v-text-field
-              v-model="album.released"
+              v-model.number="album.released"
               variant="outlined"
               density="compact"
+              type="number"
               :placeholder="`${$t('common.exampleAbbr')}1969`"
             />
           </div>
@@ -119,19 +121,21 @@
               <v-col>
                 <label>Top 500 (RS1)</label>
                 <v-text-field
-                  v-model="album.topRS1"
+                  v-model.number="album.topRS1"
                   variant="outlined"
                   density="compact"
                   placeholder="1-500"
+                  type="number"
                 />
               </v-col>
               <v-col>
                 <label>Top 500 (RS3)</label>
                 <v-text-field
-                  v-model="album.topRS3"
+                  v-model.number="album.topRS3"
                   variant="outlined"
                   density="compact"
                   placeholder="1-500"
+                  type="number"
                 />
               </v-col>
             </v-row>
@@ -263,9 +267,10 @@
           <div>
             <label>{{ this.$t('fields.edition.long') }}</label>
             <v-text-field
-              v-model="album.edition"
+              v-model.number="album.edition"
               variant="outlined"
               density="compact"
+              type="number"
               :placeholder="`${$t('common.exampleAbbr')}1977`"
             />
           </div>
@@ -283,19 +288,21 @@
               <v-col>
                 <label>{{ this.$t('fields.condition') }}</label>
                 <v-text-field
-                  v-model="album.condition"
+                  v-model.number="album.condition"
                   variant="outlined"
                   density="compact"
                   placeholder="1-10"
+                  type="number"
                 />
               </v-col>
               <v-col>
                 <label>{{ this.$t('fields.nDisk') }}</label>
                 <v-text-field
-                  v-model="album.nDisks"
+                  v-model.number="album.nDisks"
                   variant="outlined"
                   density="compact"
                   placeholder=">1"
+                  type="number"
                 />
               </v-col>
             </v-row>
@@ -356,8 +363,8 @@ export default {
   },
   computed: {
     ...mapState(useModalStore, ['show']),
-
     ...mapWritableState(useModalStore, ['album']),
+    ...mapState(useLibraryStore, ['artists']),
 
     isEditing() {
       return !!this.album.id
@@ -383,11 +390,26 @@ export default {
       if (album) this.album = album
     },
 
+    correctAlbumInputTypes() {
+      const intFields = ['released', 'topRS1', 'topRS3', 'condition', 'nDisks']
+      const parseIntFields = intFields.reduce(
+        (info, field) => ({
+          ...info,
+          [field]: isNaN(parseInt(this.album[field])) ? null : parseInt(this.album[field])
+        }),
+        {}
+      )
+
+      return { ...this.album, ...parseIntFields }
+    },
+
     submitAlbum() {
+      const album = this.correctAlbumInputTypes(this.album)
+      const { id, ...albumInfo } = album
+
       if (this.isEditing) {
-        const { id, ...albumInfo } = this.album
         this.editAlbum(id, albumInfo)
-      } else this.addAlbum(this.album)
+      } else this.addAlbum(albumInfo)
 
       this.closeModal()
     }

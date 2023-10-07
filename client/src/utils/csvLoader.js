@@ -81,6 +81,8 @@ function mapCollectionProps(collection) {
         case 'edition':
         case 'condition':
         case 'nDisks':
+        case 'topRS1':
+        case 'topRS3':
           propValue = entry[value] ? parseInt(entry[value]) : null
           break
         case 'owned':
