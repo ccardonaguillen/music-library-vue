@@ -1,7 +1,9 @@
 <template>
-  <album-filter />
-  <album-table />
-  <album-modal />
+  <v-col cols="12" sm="11" md="10" lg="8" xl="7">
+    <album-filter />
+    <album-table />
+    <album-modal />
+  </v-col>
 </template>
 
 <script>

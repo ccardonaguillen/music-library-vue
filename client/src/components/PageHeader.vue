@@ -23,7 +23,12 @@
           <router-link :to="{ name: 'topRS1' }">Top 500 RS1</router-link>
           <router-link :to="{ name: 'topRS3' }">Top 500 RS3</router-link>
         </div>
-        <v-btn prepend-icon="mdi-plus" :text="$t('controls.newAlbum')" v-else @click="openModal" />
+        <v-btn
+          prepend-icon="mdi-plus"
+          :text="$t('controls.newAlbum')"
+          v-else-if="$route.name === 'home'"
+          @click="openModal"
+        />
       </v-col>
     </v-row>
   </v-app-bar>

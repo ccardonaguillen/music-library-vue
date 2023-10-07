@@ -1,20 +1,19 @@
 <template>
-  <main>
-    <v-container fluid>
-      <v-row justify="center">
-        <v-col cols="11">
-          <div class="d-flex justify-space-between align-center mb-4">
-            <v-switch hide-details v-model="hideOwned" color="primary" label="Ocultar adquiridos" />
-            <h2 style="flex: 1">Top Rolling Stones {{ number }}</h2>
-            <div style="flex: 1"></div>
-          </div>
-          <div class="cards-container">
-            <top-r-s-album-card :album="album" v-for="album in topRSAlbums" :key="album.id" />
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-  </main>
+  <v-col cols="11">
+    <div class="topRS-header mb-4">
+      <v-switch
+        hide-details
+        v-model="hideOwned"
+        color="primary"
+        label="Ocultar adquiridos"
+        style="flex: 1"
+      />
+      <h2 style="justify-self: center">Top Rolling Stones {{ number }}</h2>
+    </div>
+    <div class="cards-container">
+      <top-r-s-album-card :album="album" v-for="album in topRSAlbums" :key="album.id" />
+    </div>
+  </v-col>
 </template>
 
 <script>
@@ -75,7 +74,6 @@ export default {
       const querySnapshot = await getDocs(q)
 
       querySnapshot.forEach((doc) => {
-        // console.log(doc.data())
         this.topRSAlbums.push({ id: doc.id, ...doc.data() })
       })
 
@@ -83,7 +81,6 @@ export default {
     }
   },
   created() {
-    console.log('creating')
     this.fetchTopRS()
   },
   watch: {
@@ -98,10 +95,20 @@ export default {
 </script>
 
 <style scoped>
+.topRS-header {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+}
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
-  column-gap: 32px;
-  row-gap:;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 32px;
+}
+
+@media screen and (max-width: 600px) {
+  .topRS-header {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

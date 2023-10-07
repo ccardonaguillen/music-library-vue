@@ -3,15 +3,12 @@
     <mobile-user-menu v-model="showDrawer" />
     <v-layout full-height>
       <v-container fluid>
-        <v-row justify="center">
-          <page-header @drawerToggled="toggleDrawer" />
-
-          <v-col cols="12" sm="11" md="10" lg="8" xl="7">
-            <v-main>
-              <router-view :key="$route.path"> </router-view>
-            </v-main>
-          </v-col>
-        </v-row>
+        <page-header @drawerToggled="toggleDrawer" />
+        <v-main>
+          <v-row no-gutters justify="center">
+            <router-view :key="$route.path"> </router-view>
+          </v-row>
+        </v-main>
       </v-container>
     </v-layout>
     <v-snackbar :model-value="show" :timeout="timeout" :color="color">
