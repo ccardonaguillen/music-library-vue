@@ -12,8 +12,8 @@ import {
   query,
   where,
   orderBy,
-  startAt,
-  endAt,
+  startAfter,
+  endBefore,
   limit,
   getCountFromServer
 } from 'firebase/firestore'
@@ -26,13 +26,13 @@ export const useLibraryStore = defineStore('library', {
   state: () => ({
     albums: [],
     artists: [],
-    page: 1,
     pageSize: 10,
     sortBy: [],
     filters: { artist: [], owned: null, favorite: null },
     albumCount: 0,
     shownAlbumCount: 0,
-    isFetching: false
+    isFetching: false,
+    lastAlbumCursor: null
   }),
 
   getters: {
@@ -63,15 +63,17 @@ export const useLibraryStore = defineStore('library', {
       this.artists = this.artists.sort((a, b) => a.localeCompare(b))
     },
 
-    async fetchLibrary() {
+    async fetchLibrary(fetchMore = false) {
       if (!useUserStore().id) return
 
-      this.clearLibrary()
+      if (!fetchMore) {
+        this.clearLibrary()
+        this.lastAlbumCursor = null
+        this.isFetching = true
+      }
 
-      this.isFetching = true
-
-      const sortBy = this.sortBy.length ? this.sortBy : [{ key: 'title', order: 'asc' }]
-      const sortOptions = sortBy.map((option) => orderBy(option.key, option.order))
+      this.sortBy = this.sortBy.length ? this.sortBy : [{ key: 'title', order: 'asc' }]
+      const sortOptions = this.sortBy.map((option) => orderBy(option.key, option.order))
 
       let filterOptions = []
 
@@ -91,20 +93,22 @@ export const useLibraryStore = defineStore('library', {
         this.libraryRef,
         ...filterOptions,
         ...sortOptions,
-        sortBy[0].order === 'desc'
-          ? endAt((this.page - 1) * this.pageSize)
-          : startAt((this.page - 1) * this.pageSize),
+        this.sortBy[0].order === 'desc'
+          ? this.lastAlbumCursor
+            ? startAfter(this.lastAlbumCursor.data()[this.sortBy[0].key])
+            : endBefore(null)
+          : startAfter(this.lastAlbumCursor?.data()[this.sortBy[0].key] ?? null),
+
         limit(this.pageSize)
       )
 
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((doc) => {
-        // console.log(doc.data())
         this.albums.push({ id: doc.id, ...doc.data() })
       })
 
-      const countSnapShot = await getCountFromServer(q)
-      this.shownAlbumCount = countSnapShot.data().count
+      this.lastAlbumCursor = querySnapshot.docs[querySnapshot.docs.length - 1]
+      this.shownAlbumCount = this.albums.length
 
       this.isFetching = false
     },
@@ -123,10 +127,12 @@ export const useLibraryStore = defineStore('library', {
       } else {
         await addDoc(this.libraryRef, albumInfo)
         this.albumCount++
-        if (refresh) await this.fetchLibrary()
-        useSnackbarStore().displaySuccessMessage(
-          i18n.global.t('alerts.added.success', { title: albumInfo.title })
-        )
+        if (refresh) {
+          await this.fetchLibrary()
+          useSnackbarStore().displaySuccessMessage(
+            i18n.global.t('alerts.added.success', { title: albumInfo.title })
+          )
+        }
       }
     },
 
