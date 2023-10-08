@@ -52,7 +52,8 @@ export const useLibraryStore = defineStore('library', {
     async fetchArtistList() {
       if (!useUserStore().id) return
 
-      this.artists = []
+      this.artists = localStorage.getItem('artistList')?.split(';') ?? []
+      if (this.artists?.length) return
 
       const querySnapshot = await getDocs(this.libraryRef)
       querySnapshot.forEach((doc) => {
@@ -61,6 +62,7 @@ export const useLibraryStore = defineStore('library', {
       })
 
       this.artists = this.artists.sort((a, b) => a.localeCompare(b))
+      localStorage.setItem('artistList', this.artists.join(';'))
     },
 
     async fetchLibrary(fetchMore = false) {
@@ -127,6 +129,10 @@ export const useLibraryStore = defineStore('library', {
       } else {
         await addDoc(this.libraryRef, albumInfo)
         this.albumCount++
+
+        const currentArtistList = localStorage.getItem('artistList')?.split(';') ?? []
+        localStorage.setItem('artistList', [...currentArtistList, albumInfo.artist]).join(';')
+
         if (refresh) {
           await this.fetchLibrary()
           useSnackbarStore().displaySuccessMessage(

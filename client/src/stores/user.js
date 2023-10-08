@@ -57,8 +57,8 @@ export const useUserStore = defineStore('user', {
 
         if (user) {
           library.fetchLibrary()
-          library.fetchArtistList()
           library.fetchAlbumCount()
+          library.fetchArtistList()
         } else library.clearLibrary()
       })
     }

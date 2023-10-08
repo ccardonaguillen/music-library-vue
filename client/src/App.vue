@@ -21,9 +21,10 @@
 import PageHeader from '@/components/PageHeader.vue'
 import MobileUserMenu from '@/components/MobileUserMenu.vue'
 
-import { mapActions, mapState } from 'pinia'
+import { mapActions, mapState, mapWritableState } from 'pinia'
 import { useUserStore } from '@/stores/user'
 import { useSnackbarStore } from '@/stores/snackbar'
+import { useLibraryStore } from '@/stores/library'
 
 export default {
   name: 'App',
@@ -34,7 +35,8 @@ export default {
   },
   components: { MobileUserMenu, PageHeader },
   computed: {
-    ...mapState(useSnackbarStore, ['show', 'message', 'color', 'timeout'])
+    ...mapState(useSnackbarStore, ['show', 'message', 'color', 'timeout']),
+    ...mapWritableState(useLibraryStore, ['artists'])
   },
   methods: {
     ...mapActions(useUserStore, ['initFirebaseAuth']),
