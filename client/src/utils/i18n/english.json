@@ -125,7 +125,9 @@
   "table": {
     "pageSelector": "Albums per page",
     "notLogged": "You are currently not logged in. Sign in to start managing your music library.",
-    "noAlbums": "There are currently no albums in your music library. Upload a collection or add one to start managing it."
+    "noAlbums": "There are currently no albums in your music library. Upload a collection or add one to start managing it.",
+    "loading": "Loading albums...",
+    "noAlbumsShown": "No albums found that match the current filters"
   },
   "credits": "Design and code"
 }

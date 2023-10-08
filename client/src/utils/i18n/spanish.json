@@ -125,7 +125,9 @@
   "table": {
     "pageSelector": "Álbumes por página",
     "notLogged": "No estás registrado. Inicia sesión y empieza organizar tu colección de música.",
-    "noAlbums": "No hay ningún albúm en tu colección. Importa una o empieza o añade un album para empezar a trabajar."
+    "noAlbums": "No hay ningún albúm en tu colección. Importa una o empieza o añade un album para empezar a trabajar.",
+    "loading": "Cargando colección...",
+    "noAlbumsShown": "No existen álbumes en la colección para estos filtros"
   },
   "credits": "Diseño y código"
 }
