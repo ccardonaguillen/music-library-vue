@@ -1,17 +1,14 @@
 <template>
-  <v-data-table-server
-    v-model:page="page"
-    v-model:items-per-page="pageSize"
+  <v-data-table-virtual
     v-model:sort-by="sortBy"
     v-model:expanded="expandedRow"
     hover
     :headers="dynamicHeaders"
     :items="albums"
-    :items-length="shownAlbumCount"
     :loading="isFetching"
-    :items-per-page-text="$t('table.pageSelector')"
+    :loading-text="$t('table.loading')"
     class="table-striped"
-    @update:options="fetchLibrary"
+    @update:sortBy="() => fetchLibrary()"
     @click:row="handleExpandRow"
   >
     <template v-slot:no-data>
@@ -51,6 +48,13 @@
       </div>
       <div class="mt-4 mb-8" v-else>No albums found that match the current filters</div>
     </template>
+
+    <template v-slot:[`item.title`]="{ item, index }">
+      <span v-observe-visibility="(isVisible) => albumVisibilityChanged(isVisible, index)">{{
+        item.title
+      }}</span>
+    </template>
+
     <template v-slot:[`item.options`]="{ item }">
       <v-menu>
         <template v-slot:activator="{ props }">
@@ -93,7 +97,7 @@
         </td>
       </tr>
     </template>
-  </v-data-table-server>
+  </v-data-table-virtual>
 </template>
 
 <script>
@@ -138,7 +142,7 @@ export default {
   computed: {
     ...mapState(useUserStore, ['isUserSignedIn']),
     ...mapState(useLibraryStore, ['albums', 'albumCount', 'shownAlbumCount', 'isFetching']),
-    ...mapWritableState(useLibraryStore, ['page', 'pageSize', 'sortBy']),
+    ...mapWritableState(useLibraryStore, ['sortBy']),
     ...mapWritableState(useModalStore, ['album']),
 
     dynamicHeaders() {
@@ -192,6 +196,10 @@ export default {
 
     handleExpandRow(event, { item }) {
       this.expandedRow = this.expandedRow.includes(item.id) ? [] : [item.id]
+    },
+
+    albumVisibilityChanged(isVisible, index) {
+      if (index === this.shownAlbumCount - 1 && isVisible) this.fetchLibrary(true)
     }
   }
 }
