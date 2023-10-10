@@ -74,7 +74,7 @@ export const useLibraryStore = defineStore('library', {
         this.isFetching = true
       }
 
-      this.sortBy = this.sortBy.length ? this.sortBy : [{ key: 'title', order: 'asc' }]
+      this.sortBy = this.sortBy.length ? this.sortBy : [{ key: 'artist', order: 'asc' }]
       const sortOptions = this.sortBy.map((option) => orderBy(option.key, option.order))
 
       let filterOptions = []
