@@ -12,6 +12,7 @@
           v-model="filters.artist"
           multiple
           chips
+          closable-chips
           hide-details
           density="compact"
           variant="outlined"
@@ -100,7 +101,6 @@ export default {
   watch: {
     filters: {
       handler() {
-        console.log('refreshing')
         this.fetchLibrary()
       },
       deep: true

@@ -68,6 +68,7 @@ export const useLibraryStore = defineStore('library', {
     async fetchLibrary(fetchMore = false) {
       if (!useUserStore().id) return
 
+      if (fetchMore && !this.lastAlbumCursor) return
       if (!fetchMore) {
         this.clearLibrary()
         this.lastAlbumCursor = null
@@ -75,6 +76,8 @@ export const useLibraryStore = defineStore('library', {
       }
 
       this.sortBy = this.sortBy.length ? this.sortBy : [{ key: 'artist', order: 'asc' }]
+      if (!this.sortBy.map(({ key }) => key).includes('title'))
+        this.sortBy.push({ key: 'title', order: 'asc' })
       const sortOptions = this.sortBy.map((option) => orderBy(option.key, option.order))
 
       let filterOptions = []
@@ -97,9 +100,9 @@ export const useLibraryStore = defineStore('library', {
         ...sortOptions,
         this.sortBy[0].order === 'desc'
           ? this.lastAlbumCursor
-            ? startAfter(this.lastAlbumCursor.data()[this.sortBy[0].key])
+            ? startAfter(this.lastAlbumCursor)
             : endBefore(null)
-          : startAfter(this.lastAlbumCursor?.data()[this.sortBy[0].key] ?? null),
+          : startAfter(this.lastAlbumCursor ?? null),
 
         limit(this.pageSize)
       )

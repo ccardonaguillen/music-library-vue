@@ -50,9 +50,13 @@
     </template>
 
     <template v-slot:[`item.title`]="{ item, index }">
-      <span v-observe-visibility="(isVisible) => albumVisibilityChanged(isVisible, index)">{{
-        item.title
-      }}</span>
+      <span
+        v-observe-visibility="{
+          callback: (isVisible) => albumVisibilityChanged(isVisible, index),
+          intersection: { threshold: 0.1 }
+        }"
+        >{{ item.title }}</span
+      >
     </template>
 
     <template v-slot:[`item.options`]="{ item }">
