@@ -6,9 +6,7 @@
         <page-header @drawerToggled="toggleDrawer" />
         <v-main>
           <v-row no-gutters justify="center">
-            <keep-alive>
-              <router-view :key="$route.path"> </router-view>
-            </keep-alive>
+            <router-view :key="$route.path"> </router-view>
           </v-row>
         </v-main>
       </v-container>

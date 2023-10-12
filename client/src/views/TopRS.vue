@@ -14,8 +14,12 @@
       <top-r-s-album-card
         :album="album"
         :top-r-s-number="topRSNumber"
-        v-for="album in topRSAlbums"
+        v-for="(album, index) in topRSAlbums"
         :key="album.id"
+        v-observe-visibility="{
+          callback: (isVisible) => cardVisibilityChanged(isVisible, index),
+          intersection: { threshold: 0.1 }
+        }"
       />
     </div>
   </v-col>
@@ -30,7 +34,7 @@ import {
   limit,
   orderBy,
   query,
-  startAt,
+  startAfter,
   where
 } from 'firebase/firestore'
 import { mapState } from 'pinia'
@@ -48,6 +52,8 @@ export default {
 
   data() {
     return {
+      lastAlbum: null,
+      pageSize: 5,
       isFetching: false,
       hideOwned: false,
       topRSAlbums: []
@@ -58,9 +64,14 @@ export default {
   },
 
   methods: {
-    async fetchTopRS() {
+    clearAlbumList() {
       this.topRSAlbums = []
+      this.lastAlbum = null
+    },
+
+    async fetchTopRS(clear = false) {
       if (!this.userId) return
+      if (clear) this.clearAlbumList()
 
       this.isFetching = true
       const libraryRef = collection(getFirestore(), this.userId)
@@ -72,28 +83,32 @@ export default {
         libraryRef,
         ...filters,
         orderBy(`topRS${this.topRSNumber}`, 'asc'),
-        startAt((this.page - 1) * this.pageSize),
+        startAfter(this.lastAlbum?.data()[`topRS${this.topRSNumber}`] ?? 0),
         limit(this.pageSize)
       )
 
       const querySnapshot = await getDocs(q)
-
+      this.lastAlbum = querySnapshot.docs[querySnapshot.docs.length - 1]
       querySnapshot.forEach((doc) => {
         this.topRSAlbums.push({ id: doc.id, ...doc.data() })
       })
 
       this.isFetching = false
+    },
+
+    cardVisibilityChanged(isVisible, index) {
+      if (index === this.topRSAlbums.length - 1 && isVisible) this.fetchTopRS()
     }
   },
   created() {
-    this.fetchTopRS()
+    this.fetchTopRS(false)
   },
   watch: {
     userId() {
-      this.fetchTopRS()
+      this.fetchTopRS(true)
     },
     hideOwned() {
-      this.fetchTopRS()
+      this.fetchTopRS(true)
     }
   }
 }
