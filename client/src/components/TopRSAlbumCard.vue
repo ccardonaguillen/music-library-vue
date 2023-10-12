@@ -23,20 +23,10 @@
       </div>
 
       <v-card-text class="album-info-container py-0">
-        <p class="section-title">{{ $t('fields.released.short') }}</p>
-        <p>{{ album.released }}</p>
-
-        <p class="section-title">{{ $t('fields.label') }}</p>
-        <p>{{ album.label || '-' }}</p>
-
-        <p class="section-title">{{ $t('fields.country') }}</p>
-        <p>{{ album.country || '-' }}</p>
-
-        <p class="section-title">{{ $t('fields.edition.short') }}</p>
-        <p>{{ album.edition || '-' }}</p>
-
-        <p class="section-title">{{ $t('fields.catalogNum.short') }}</p>
-        <p>{{ album.catalog_num || '-' }}</p>
+        <template v-for="(item, idx) in cardFields" :key="idx">
+          <p class="section-title">{{ $t(`fields.${item.label}`) }}</p>
+          <p>{{ album[item.field] || '-' }}</p>
+        </template>
       </v-card-text>
 
       <v-chip
@@ -65,6 +55,17 @@ export default {
   props: {
     album: Object,
     topRSNumber: Number
+  },
+  computed: {
+    cardFields() {
+      return [
+        { label: 'released.short', field: 'released' },
+        { label: 'label', field: 'label' },
+        { label: 'country', field: 'country' },
+        { label: 'edition.short', field: 'edition' },
+        { label: 'catalogNum.short', field: 'catalog_num' }
+      ]
+    }
   }
 }
 </script>
@@ -73,7 +74,9 @@ export default {
 .album-info-container {
   display: grid;
   grid-template-columns: auto 1fr;
+  align-items: end;
   column-gap: 12px;
+  row-gap: 4px;
 }
 
 .album-info-container > p {

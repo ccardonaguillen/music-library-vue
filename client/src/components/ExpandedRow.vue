@@ -22,31 +22,16 @@
       <div>
         <h3 class="text-decoration-underline mb-2">General info</h3>
         <div class="extra-info-container">
-          <p class="font-weight-bold">{{ $t('fields.released.long') }}</p>
-          <p>{{ album.released || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.owned') }}</p>
-          <p>
-            {{ $t(album.owned ? 'common.yes' : 'common.no')
-            }}{{ album.location ? ` (${album.location})` : '' }}
-          </p>
-
-          <p class="font-weight-bold">{{ $t('fields.favorite') }}</p>
-          <p>{{ $t(album.favorite ? 'common.yes' : 'common.no') }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.genre') }}</p>
-          <p>{{ genres }}</p>
-
-          <p class="font-weight-bold">Top 500 RS1</p>
-          <p>{{ album.topRS1 || '-' }}</p>
-
-          <p class="font-weight-bold">Top 500 RS3</p>
-          <p>{{ album.topRS3 || '-' }}</p>
-
-          <a :href="album.wikipedia" class="font-weight-bold">Wikipedia</a>
-          <span></span>
-
-          <a :href="album.discogs" class="font-weight-bold">Discogs</a>
+          <template v-for="(item, idx) in generalInfoItems" :key="idx">
+            <template v-if="item.link">
+              <a :href="item.href" class="font-weight-bold" v-if="item.href">{{ item.label }}</a>
+              <span />
+            </template>
+            <template v-else>
+              <p class="font-weight-bold">{{ $t(`fields.${item.label}`) }}</p>
+              <p>{{ item.text }}</p>
+            </template>
+          </template>
         </div>
       </div>
 
@@ -55,32 +40,10 @@
       <div>
         <h3 class="text-decoration-underline mb-2">Record info</h3>
         <div class="extra-info-container">
-          <p class="font-weight-bold">{{ $t('fields.recordFormat') }}</p>
-          <p>{{ albumFormats || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.albumFormat') }}</p>
-          <p>{{ album.album_format || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.catalogNum.long') }}</p>
-          <p>{{ album.catalog_num || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.label') }}</p>
-          <p>{{ album.label || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.country') }}</p>
-          <p>{{ album.country || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.edition.long') }}</p>
-          <p>{{ album.edition || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.matrix') }}</p>
-          <p>{{ album.matrix || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.condition') }}</p>
-          <p>{{ album.condition || '-' }}</p>
-
-          <p class="font-weight-bold">{{ $t('fields.notes') }}</p>
-          <p>{{ album.notes || '-' }}</p>
+          <template v-for="(item, idx) in recordInfoItems" :key="idx">
+            <p class="font-weight-bold">{{ $t(`fields.${item.label}`) }}</p>
+            <p>{{ item.text || '-' }}</p>
+          </template>
         </div>
       </div>
     </template>
@@ -110,6 +73,41 @@ export default {
     album: Object
   },
   computed: {
+    generalInfoItems() {
+      return [
+        { label: 'released.long', text: this.album.released || '-' },
+        {
+          label: 'owned',
+          text: `${this.$t(this.album.owned ? 'common.yes' : 'common.no')} ${
+            this.album.location ? ` (${this.album.location})` : ''
+          }`
+        },
+        {
+          label: 'favorite',
+          text: this.$t(`common.${this.album.favorite ? 'yes' : 'no'}`)
+        },
+        { label: 'genre', text: this.genres },
+        { label: 'topRS1', text: this.album.topRS1 || '-' },
+        { label: 'topRS3', text: this.album.topRS3 || '-' },
+        { label: 'Wikipedia', href: this.album.wikipedia, link: true },
+        { label: 'Discogs', href: this.album.discogs, link: true }
+      ]
+    },
+
+    recordInfoItems() {
+      return [
+        { label: 'recordFormat', text: this.albumFormats },
+        { label: 'albumFormat', text: this.album.album_format },
+        { label: 'catalogNum.short', text: this.album.catalog_num },
+        { label: 'label', text: this.album.label },
+        { label: 'country', text: this.album.country },
+        { label: 'edition.long', text: this.album.edition },
+        { label: 'matrix', text: this.album.matrix },
+        { label: 'condition', text: this.album.condition },
+        { label: 'notes', text: this.album.notes }
+      ]
+    },
+
     albumFormats() {
       return this.album.record_format
         ? this.album.record_format
@@ -135,7 +133,7 @@ export default {
 
 .extra-info-container {
   display: grid;
-  grid-template-columns: minmax(auto, 120px) 1fr;
+  grid-template-columns: minmax(auto, 160px) 1fr;
   column-gap: 12px;
 }
 

@@ -1,12 +1,14 @@
 <template>
   <v-app>
-    <mobile-user-menu v-model="showDrawer" />
+    <user-menu v-model="showDrawer" />
     <v-layout full-height>
       <v-container fluid>
         <page-header @drawerToggled="toggleDrawer" />
         <v-main>
           <v-row no-gutters justify="center">
-            <router-view :key="$route.path"> </router-view>
+            <keep-alive>
+              <router-view :key="$route.path"> </router-view>
+            </keep-alive>
           </v-row>
         </v-main>
       </v-container>
@@ -19,7 +21,7 @@
 
 <script>
 import PageHeader from '@/components/PageHeader.vue'
-import MobileUserMenu from '@/components/MobileUserMenu.vue'
+import UserMenu from '@/components/UserMenu.vue'
 
 import { mapActions, mapState, mapWritableState } from 'pinia'
 import { useUserStore } from '@/stores/user'
@@ -33,7 +35,7 @@ export default {
       showDrawer: false
     }
   },
-  components: { MobileUserMenu, PageHeader },
+  components: { UserMenu, PageHeader },
   computed: {
     ...mapState(useSnackbarStore, ['show', 'message', 'color', 'timeout']),
     ...mapWritableState(useLibraryStore, ['artists'])

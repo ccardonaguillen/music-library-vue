@@ -39,8 +39,6 @@
             <label>{{ this.$t('fields.title') }}</label>
             <v-text-field
               v-model="album.title"
-              variant="outlined"
-              density="compact"
               :placeholder="`${$t('common.exampleAbbr')}Revolver`"
             />
           </div>
@@ -48,8 +46,6 @@
             <label>{{ this.$t('fields.artist') }}</label>
             <v-combobox
               v-model="album.artist"
-              variant="outlined"
-              density="compact"
               :items="artists"
               :placeholder="`${$t('common.exampleAbbr')}The Beatles`"
             />
@@ -58,8 +54,6 @@
             <label>{{ this.$t('fields.released.long') }}</label>
             <v-text-field
               v-model.number="album.released"
-              variant="outlined"
-              density="compact"
               type="number"
               :placeholder="`${$t('common.exampleAbbr')}1969`"
             />
@@ -68,8 +62,6 @@
             <label>{{ this.$t('fields.genre') }}</label>
             <v-select
               v-model="album.genre"
-              variant="outlined"
-              density="compact"
               multiple
               :items="genreSelectItems"
               :placeholder="$t('albumModal.placeholders.genre')"
@@ -120,53 +112,26 @@
             <v-row>
               <v-col>
                 <label>Top 500 (RS1)</label>
-                <v-text-field
-                  v-model.number="album.topRS1"
-                  variant="outlined"
-                  density="compact"
-                  placeholder="1-500"
-                  type="number"
-                />
+                <v-text-field v-model.number="album.topRS1" placeholder="1-500" type="number" />
               </v-col>
               <v-col>
                 <label>Top 500 (RS3)</label>
-                <v-text-field
-                  v-model.number="album.topRS3"
-                  variant="outlined"
-                  density="compact"
-                  placeholder="1-500"
-                  type="number"
-                />
+                <v-text-field v-model.number="album.topRS3" placeholder="1-500" type="number" />
               </v-col>
             </v-row>
           </v-container>
 
           <div>
             <label>{{ this.$t('fields.wikipedia') }}</label>
-            <v-text-field
-              v-model="album.wikipedia"
-              variant="outlined"
-              density="compact"
-              placeholder="es.wikipedia.org/wiki/..."
-            />
+            <v-text-field v-model="album.wikipedia" placeholder="es.wikipedia.org/wiki/..." />
           </div>
           <div>
             <label>{{ this.$t('fields.discogs') }}</label>
-            <v-text-field
-              v-model="album.discogs"
-              variant="outlined"
-              density="compact"
-              placeholder="www.discogs.com/release/..."
-            />
+            <v-text-field v-model="album.discogs" placeholder="www.discogs.com/release/..." />
           </div>
           <div>
             <label>{{ this.$t('fields.jacket') }}</label>
-            <v-text-field
-              v-model="album.jacket"
-              variant="outlined"
-              density="compact"
-              placeholder=""
-            />
+            <v-text-field v-model="album.jacket" placeholder="" />
           </div>
         </component>
         <component
@@ -241,8 +206,6 @@
             <label>{{ this.$t('fields.catalogNum.long') }}</label>
             <v-text-field
               v-model="album.catalog_num"
-              variant="outlined"
-              density="compact"
               :placeholder="`${$t('common.exampleAbbr')}1C 072-04 097`"
             />
           </div>
@@ -250,8 +213,6 @@
             <label>{{ this.$t('fields.label') }}</label>
             <v-text-field
               v-model="album.label"
-              variant="outlined"
-              density="compact"
               :placeholder="`${$t('common.exampleAbbr')}Apple Records`"
             />
           </div>
@@ -259,8 +220,6 @@
             <label>{{ this.$t('fields.country') }}</label>
             <v-text-field
               v-model="album.country"
-              variant="outlined"
-              density="compact"
               :placeholder="`${$t('common.exampleAbbr')}Germany`"
             />
           </div>
@@ -268,8 +227,6 @@
             <label>{{ this.$t('fields.edition.long') }}</label>
             <v-text-field
               v-model.number="album.edition"
-              variant="outlined"
-              density="compact"
               type="number"
               :placeholder="`${$t('common.exampleAbbr')}1977`"
             />
@@ -278,8 +235,6 @@
             <label>{{ this.$t('fields.matrix') }}</label>
             <v-text-field
               v-model="album.matrix"
-              variant="outlined"
-              density="compact"
               :placeholder="`${$t('common.exampleAbbr')}04097-A-2 SHZE 186 A - X2`"
             />
           </div>
@@ -287,23 +242,11 @@
             <v-row>
               <v-col>
                 <label>{{ this.$t('fields.condition') }}</label>
-                <v-text-field
-                  v-model.number="album.condition"
-                  variant="outlined"
-                  density="compact"
-                  placeholder="1-10"
-                  type="number"
-                />
+                <v-text-field v-model.number="album.condition" placeholder="1-10" type="number" />
               </v-col>
               <v-col>
                 <label>{{ this.$t('fields.nDisk') }}</label>
-                <v-text-field
-                  v-model.number="album.nDisks"
-                  variant="outlined"
-                  density="compact"
-                  placeholder=">1"
-                  type="number"
-                />
+                <v-text-field v-model.number="album.nDisks" placeholder=">1" type="number" />
               </v-col>
             </v-row>
           </v-container>
@@ -311,8 +254,6 @@
             <label>{{ this.$t('fields.location') }}</label>
             <v-text-field
               v-model="album.location"
-              variant="outlined"
-              density="compact"
               :placeholder="$t('albumModal.placeholders.location')"
             />
           </div>
@@ -320,8 +261,6 @@
             <label>{{ this.$t('fields.notes') }}</label>
             <v-text-field
               v-model="album.notes"
-              variant="outlined"
-              density="compact"
               :placeholder="$t('albumModal.placeholders.notes')"
             />
           </div>
@@ -454,6 +393,7 @@ export default {
 
   .button-container {
     background-color: white;
+    z-index: 10;
     row-gap: 16px;
     position: fixed;
     left: 0;

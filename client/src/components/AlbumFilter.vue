@@ -7,45 +7,33 @@
     <div class="filter-container mr-4">
       <div style="grid-area: artist">
         <p class="pl-3">{{ $t('fields.artist') }}</p>
-        <v-autocomplete
+        <v-filter-autocomplete
           :items="artists"
           v-model="filters.artist"
           multiple
           chips
           closable-chips
-          hide-details
-          density="compact"
-          variant="outlined"
-          rounded
           :placeholder="$t('controls.placeholder.artist')"
         />
       </div>
 
       <div style="grid-area: owned">
         <p class="pl-3">{{ $t('fields.owned') }}</p>
-        <v-select
+        <v-filter-select
           v-model="filters.owned"
           :items="trueFalseOptions"
           item-value="value"
           item-title="label"
-          hide-details
-          density="compact"
-          variant="outlined"
-          rounded
         />
       </div>
 
       <div style="grid-area: favorite">
         <p class="pl-3">{{ $t('fields.favorite') }}</p>
-        <v-select
+        <v-filter-select
           v-model="filters.favorite"
           :items="trueFalseOptions"
           item-value="value"
           item-title="label"
-          hide-details
-          density="compact"
-          variant="outlined"
-          rounded
         />
       </div>
     </div>

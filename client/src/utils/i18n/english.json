@@ -51,7 +51,9 @@
     "nDisk": "Disks",
     "notes": "Notes",
     "format": "Formato",
-    "location": "Location"
+    "location": "Location",
+    "topRS1": "Top 500 RS1",
+    "topRS3": "Top 500 RS3"
   },
   "common": {
     "exampleAbbr": "e.g. ",

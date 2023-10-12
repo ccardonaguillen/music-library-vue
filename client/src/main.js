@@ -5,10 +5,11 @@ import { createPinia } from 'pinia'
 import { i18n } from '@/i18n'
 
 import 'vuetify/styles'
-import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
+import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
-import { VDataTable } from 'vuetify/labs/VDataTable'
-import { VDataTableServer, VDataTableVirtual } from 'vuetify/labs/VDataTable'
+import { VAutocomplete } from 'vuetify/components'
+import { VSelect } from 'vuetify/components'
+import { VDataTableVirtual } from 'vuetify/labs/VDataTable'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
@@ -22,9 +23,39 @@ const app = createApp(App)
 const vuetify = createVuetify({
   components: {
     ...components,
-    VDataTable,
-    VDataTableServer,
     VDataTableVirtual
+  },
+  aliases: {
+    VFilterAutocomplete: VAutocomplete,
+    VFilterSelect: VSelect
+  },
+  defaults: {
+    VFilterAutocomplete: {
+      hideDetails: true,
+      density: 'compact',
+      variant: 'outlined',
+      rounded: true
+    },
+    VFilterSelect: {
+      hideDetails: true,
+      density: 'compact',
+      variant: 'outlined',
+      rounded: true
+    },
+    VForm: {
+      VTextField: {
+        variant: 'outlined',
+        density: 'compact'
+      },
+      VCombobox: {
+        variant: 'outlined',
+        density: 'compact'
+      },
+      VSelect: {
+        variant: 'outlined',
+        density: 'compact'
+      }
+    }
   },
   directives,
   icons: {

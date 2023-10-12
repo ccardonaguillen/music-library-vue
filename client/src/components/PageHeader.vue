@@ -13,6 +13,8 @@
           <v-btn
             icon="mdi-menu"
             :size="$vuetify.display.mdAndUp ? 'x-large' : 'default'"
+            density="compact"
+            class="mr-2"
             @click="$emit('drawerToggled')"
           />
           <h1 v-t="'header.title'" v-if="$vuetify.display.mdAndUp"></h1>

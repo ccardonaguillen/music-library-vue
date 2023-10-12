@@ -1,52 +1,98 @@
 <template>
-  <v-menu location="bottom">
-    <template v-slot:activator="{ props }">
-      <v-avatar v-bind="props" v-if="isUserSignedIn"> <v-img :src="profilePicture" /> </v-avatar>
-      <v-icon v-bind="props" icon="mdi-account-circle" size="45" v-else />
+  <v-navigation-drawer width="300" temporary v-model="show">
+    <v-list>
+      <v-list-item :title="username" :subtitle="email" v-if="isUserSignedIn">
+        <template v-slot:prepend>
+          <v-avatar> <v-img :src="profilePicture" /> </v-avatar>
+        </template>
+      </v-list-item>
+      <v-list-item @click="signIn" v-else>
+        <template v-slot:prepend>
+          <v-icon size="40" class="mr-n5" icon="mdi-account-circle" />
+        </template>
+        {{ $t('controls.googleSignIn') }}
+      </v-list-item>
+    </v-list>
+    <v-divider />
+
+    <v-list>
+      <v-list-item
+        prepend-icon="mdi-home-account"
+        :title="$t('header.home')"
+        :to="{ name: 'home' }"
+      />
+      <v-list-item
+        prepend-icon="mdi-format-list-bulleted"
+        title="Top 500 RS 1"
+        :to="{ name: 'topRS1' }"
+      />
+      <v-list-item
+        prepend-icon="mdi-format-list-bulleted"
+        title="Top 500 RS 3"
+        :to="{ name: 'topRS3' }"
+      />
+    </v-list>
+    <v-divider />
+    <v-list>
+      <v-list-item :title="$t('controls.language')">
+        <template v-slot:append>
+          <v-btn-toggle
+            v-model="$i18n.locale"
+            color="deep-purple-accent-3"
+            density="compact"
+            class="d-flex align-center"
+          >
+            <v-btn value="en" height="28" variant="outlined" size="x-small">
+              <v-img width="20" :src="langFlags.en" />
+            </v-btn>
+            <v-btn value="es" height="28" variant="outlined" size="x-small">
+              <v-img width="20" :src="langFlags.es" />
+            </v-btn>
+          </v-btn-toggle>
+        </template>
+      </v-list-item>
+    </v-list>
+    <template v-slot:append v-if="isUserSignedIn">
+      <div class="px-2 py-4">
+        <v-btn
+          block
+          :text="$t('controls.logout')"
+          prepend-icon="mdi-power"
+          color="primary"
+          @click="logOutUser"
+        />
+      </div>
     </template>
-    <v-card class="py-3">
-      <div class="d-flex align-center px-3" v-if="isUserSignedIn">
-        <v-avatar class="mr-2">
-          <v-img :src="profilePicture" />
-        </v-avatar>
-        <p>{{ username }}</p>
-      </div>
-      <v-divider class="my-4 mx-3" v-if="isUserSignedIn" />
-      <div class="d-flex flex-column px-3">
-        Language
-        <v-btn-toggle v-model="$i18n.locale" color="deep-purple-accent-3" style="gap: 16px">
-          <v-btn value="en"> <v-img width="25" :src="langFlags.en" /> </v-btn>
-          <v-btn value="es"> <v-img width="25" :src="langFlags.es" /> </v-btn>
-        </v-btn-toggle>
-      </div>
-      <v-divider class="my-4 mx-3" />
-      <v-list-item density="compact" @click="logOutUser" v-if="isUserSignedIn">
-        <v-icon icon="mdi-power" />
-        Log out
-      </v-list-item>
-      <v-list-item density="compact" @click="signIn" v-else>
-        <v-icon icon="mdi-google" />
-        Sign in with Google
-      </v-list-item>
-    </v-card>
-  </v-menu>
+  </v-navigation-drawer>
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia'
-import { useUserStore } from '@/stores/user'
 import esFlag from '@/assets/flags/es.svg'
 import gbFlag from '@/assets/flags/gb.svg'
+import { mapActions, mapState } from 'pinia'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'UserMenu',
+  props: {
+    modelValue: Boolean
+  },
   data() {
     return {
       langFlags: { es: esFlag, en: gbFlag }
     }
   },
   computed: {
-    ...mapState(useUserStore, ['id', 'username', 'profilePicture', 'isUserSignedIn'])
+    ...mapState(useUserStore, ['id', 'username', 'email', 'profilePicture', 'isUserSignedIn']),
+
+    show: {
+      get() {
+        return this.modelValue
+      },
+      set(value) {
+        return this.$emit('update:modelValue', value)
+      }
+    }
   },
   methods: {
     ...mapActions(useUserStore, ['signIn', 'logOutUser'])
