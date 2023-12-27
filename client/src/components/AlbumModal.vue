@@ -303,6 +303,7 @@ export default {
         'latin',
         'stage',
         'reggae',
+        'blues',
         'nonMusic',
         'children',
         'military'
