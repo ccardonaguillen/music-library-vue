@@ -25,6 +25,7 @@ function parseAlbum(json) {
     Latin: 'latin',
     'Stage & Screen': 'stage',
     Reggae: 'reggae',
+    Blues: 'blues',
     'Non-Music': 'nonMusic',
     "Children's": 'children',
     'Brass & Military': 'military'
@@ -36,8 +37,9 @@ function parseAlbum(json) {
     released: parseInt(released.slice(0, 4)),
     genre: genres.map((genre) => genresMap[genre]),
     discogs: uri,
-    record_format: formats[0].descriptions.filter((f) => ['LP', 'EP', 'Single'].includes(f)),
-    album_format: formats[0].name,
+    record_format: formats[0].name ? [formats[0].name.toLowerCase()] : [],
+    album_format:
+      formats[0].descriptions.find((f) => ['LP', 'EP', 'Single'].includes(f)).toLowerCase() ?? null,
     catalog_num: labels[0].catno,
     edition: year,
     country,
