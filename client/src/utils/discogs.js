@@ -7,6 +7,7 @@ async function fetchRelease(release_id) {
 
     return parseAlbum(json)
   } catch (e) {
+    console.error('Error fetching release:', e)
     return null
   }
 }
