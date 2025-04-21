@@ -28,7 +28,7 @@ export const useLibraryStore = defineStore('library', {
     artists: [],
     pageSize: 10,
     sortBy: [],
-    filters: { artist: [], owned: null, favorite: null },
+    filters: { artist: [], box: null, owned: null, favorite: null },
     albumCount: 0,
     shownAlbumCount: 0,
     isFetching: false,
@@ -84,6 +84,10 @@ export const useLibraryStore = defineStore('library', {
 
       if (this.filters.artist.length) {
         filterOptions.push(where('artist', 'in', this.filters.artist))
+      }
+
+      if (this.filters.box !== null) {
+        filterOptions.push(where('box', '==', this.filters.box))
       }
 
       if (this.filters.owned !== null) {

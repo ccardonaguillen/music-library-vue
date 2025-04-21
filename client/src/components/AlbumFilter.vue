@@ -17,6 +17,17 @@
         />
       </div>
 
+      <div style="grid-area: box">
+        <p class="pl-3">{{ $t('fields.box') }}</p>
+        <v-filter-autocomplete
+          v-model="filters.box"
+          :items="boxes"
+          item-value="value"
+          item-title="label"
+          :placeholder="$t('controls.placeholder.artist')"
+        />
+      </div>
+
       <div style="grid-area: owned">
         <p class="pl-3">{{ $t('fields.owned') }}</p>
         <v-filter-select
@@ -64,6 +75,10 @@ export default {
         { label: this.$t('common.all'), value: null },
         { label: this.$t('common.yes'), value: true },
         { label: this.$t('common.no'), value: false }
+      ],
+      boxes: [
+        { label: this.$t('common.all'), value: null },
+        ...Array.from({ length: 20 }, (_, i) => ({ label: i + 1, value: i + 1 }))
       ]
     }
   },
@@ -100,10 +115,10 @@ export default {
 <style scoped>
 .filter-container {
   display: grid;
-  grid-template-areas: 'artist owned favorite';
+  grid-template-areas: 'artist box owned favorite';
   grid-template-rows: auto;
-  grid-template-columns: 3fr 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr;
+  gap: 12px;
 }
 
 @media screen and (max-width: 600px) {
