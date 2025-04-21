@@ -22,12 +22,11 @@
         density="compact"
         hide-details
         class="mb-2 mb-sm-8"
-        @click:append-inner="fetchAlbum"
         @keydown.enter="fetchAlbum"
       >
-        <template v-slot:append-inner>
+        <template v-slot:append-inner="{ props }">
           <v-progress-circular v-if="awaitingDiscogsResponse" indeterminate size="20" />
-          <v-icon v-else>mdi-cloud-search </v-icon>
+          <v-icon @click="fetchAlbum" v-else>mdi-cloud-search </v-icon>
         </template>
       </v-text-field>
 
