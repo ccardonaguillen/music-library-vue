@@ -32,7 +32,10 @@
       </v-text-field>
 
       <v-form>
-        <component :is="$vuetify.display.xs ? 'div' : 'fieldset'" class="pa-0 px-sm-5 py-sm-4">
+        <component
+          :is="$vuetify.display.xs ? 'div' : 'fieldset'"
+          class="pa-0 px-sm-5 py-sm-4 rounded"
+        >
           <h3 class="text-decoration-underline sticky-header" v-if="$vuetify.display.xs">
             {{ $t('albumModal.fieldsets.general') }}
           </h3>
@@ -141,7 +144,7 @@
         </component>
         <component
           :is="$vuetify.display.xs ? 'div' : 'fieldset'"
-          class="pa-0 px-sm-5 py-sm-4 mt-sm-4"
+          class="pa-0 px-sm-5 py-sm-4 mt-sm-4 rounded"
           v-if="album.owned"
         >
           <h3 class="text-decoration-underline sticky-header" v-if="$vuetify.display.xs">
@@ -343,6 +346,7 @@ export default {
     async fetchAlbum() {
       this.awaitingDiscogsResponse = true
       const album = await fetchRelease(this.discogsId)
+      console.log('Fetched album:', album)
       if (album) this.album = { ...this.album, ...album }
 
       this.awaitingDiscogsResponse = false
