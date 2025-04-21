@@ -18,13 +18,18 @@
       <v-text-field
         v-model="discogsId"
         :label="$t('albumModal.placeholders.discogs')"
-        append-inner-icon="mdi-cloud-search"
         variant="outlined"
         density="compact"
         hide-details
         class="mb-2 mb-sm-8"
         @click:append-inner="fetchAlbum"
-      />
+        @keydown.enter="fetchAlbum"
+      >
+        <template v-slot:append-inner>
+          <v-progress-circular v-if="awaitingDiscogsResponse" indeterminate size="20" />
+          <v-icon v-else>mdi-cloud-search </v-icon>
+        </template>
+      </v-text-field>
 
       <v-form>
         <component :is="$vuetify.display.xs ? 'div' : 'fieldset'" class="pa-0 px-sm-5 py-sm-4">
@@ -291,6 +296,7 @@ export default {
   data() {
     return {
       discogsId: null,
+      awaitingDiscogsResponse: false,
       genres: [
         'rock',
         'electronic',
@@ -335,8 +341,11 @@ export default {
     },
 
     async fetchAlbum() {
+      this.awaitingDiscogsResponse = true
       const album = await fetchRelease(this.discogsId)
       if (album) this.album = { ...this.album, ...album }
+
+      this.awaitingDiscogsResponse = false
     },
 
     correctAlbumInputTypes() {
