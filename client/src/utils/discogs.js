@@ -40,7 +40,7 @@ function parseAlbum(json) {
     discogs: uri,
     record_format: formats[0].name ? [formats[0].name.toLowerCase()] : [],
     album_format:
-      formats[0].descriptions.find((f) => ['LP', 'EP', 'Single'].includes(f)).toLowerCase() ?? null,
+      formats[0].descriptions.find((f) => ['LP', 'EP', 'Single'].includes(f))?.toLowerCase() ?? null,
     catalog_num: labels[0].catno,
     edition: year,
     country,
