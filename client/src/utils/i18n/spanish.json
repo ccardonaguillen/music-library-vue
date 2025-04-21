@@ -52,7 +52,8 @@
     "nDisk": "Discos",
     "notes": "Observaciones",
     "format": "Formato",
-    "location": "Ubicación"
+    "location": "Ubicación",
+    "box": "Caja"
   },
   "common": {
     "exampleAbbr": "p. ej. ",

@@ -258,13 +258,23 @@
               </v-col>
             </v-row>
           </v-container>
-          <div>
-            <label>{{ this.$t('fields.location') }}</label>
-            <v-text-field
-              v-model="album.location"
-              :placeholder="$t('albumModal.placeholders.location')"
-            />
-          </div>
+
+          <v-container class="pa-0">
+            <v-row>
+              <v-col cols="9" class="py-0 my-2">
+                <label>{{ this.$t('fields.location') }}</label>
+                <v-text-field
+                  v-model="album.location"
+                  :placeholder="$t('albumModal.placeholders.location')"
+                />
+              </v-col>
+              <v-col cols="3" class="py-0 my-2">
+                <label>{{ this.$t('fields.box') }}</label>
+                <v-text-field v-model.number="album.box" placeholder="1, 2, ..." type="number" />
+              </v-col>
+            </v-row>
+          </v-container>
+
           <div>
             <label>{{ this.$t('fields.notes') }}</label>
             <v-text-field

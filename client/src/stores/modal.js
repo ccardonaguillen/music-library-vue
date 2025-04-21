@@ -23,6 +23,8 @@ const blankAlbum = {
   matrix: '',
   condition: null,
   nDisks: null,
+  location: '',
+  box: null,
   notes: ''
 }
 
