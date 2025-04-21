@@ -52,7 +52,7 @@ export const useLibraryStore = defineStore('library', {
     async fetchArtistList() {
       if (!useUserStore().id) return
 
-      this.artists = localStorage.getItem('artistList')?.split(';') ?? []
+      this.artists = [...new Set(localStorage.getItem('artistList')?.split(';') ?? [])].sort((a, b) => a.localeCompare(b))
       if (this.artists?.length) return
 
       const querySnapshot = await getDocs(this.libraryRef)
