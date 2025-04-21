@@ -144,6 +144,7 @@
         <component
           :is="$vuetify.display.xs ? 'div' : 'fieldset'"
           class="pa-0 px-sm-5 py-sm-4 mt-sm-4 rounded"
+          :style="{ marginBottom: $vuetify.display.xs ? '100px' : '0' }"
           v-if="album.owned"
         >
           <h3 class="text-decoration-underline sticky-header" v-if="$vuetify.display.xs">
@@ -245,13 +246,13 @@
               :placeholder="`${$t('common.exampleAbbr')}04097-A-2 SHZE 186 A - X2`"
             />
           </div>
-          <v-container class="px-0">
+          <v-container class="pa-0">
             <v-row>
-              <v-col>
+              <v-col class="py-0 my-2">
                 <label>{{ this.$t('fields.condition') }}</label>
                 <v-text-field v-model.number="album.condition" placeholder="1-10" type="number" />
               </v-col>
-              <v-col>
+              <v-col class="py-0 my-2">
                 <label>{{ this.$t('fields.nDisk') }}</label>
                 <v-text-field v-model.number="album.nDisks" placeholder=">1" type="number" />
               </v-col>
