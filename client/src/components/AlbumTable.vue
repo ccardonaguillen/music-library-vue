@@ -80,6 +80,7 @@
         </v-card>
       </v-menu>
     </template>
+
     <template v-slot:[`item.owned`]="{ item }">
       <v-icon
         :icon="item.owned ? 'mdi-check' : 'mdi-close'"
@@ -159,6 +160,14 @@ export default {
       }
 
       const desktopColumns = [
+        {
+          title: this.$t('fields.box'),
+          align: 'start',
+          sortable: true,
+          value: (item) => item.box ?? '-',
+          key: 'box',
+          width: '10%'
+        },
         {
           title: this.$t('fields.owned'),
           align: 'center',
