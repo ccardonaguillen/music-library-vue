@@ -297,7 +297,6 @@ export default {
   name: 'AlbumModal',
   data() {
     return {
-      discogsId: null,
       awaitingDiscogsResponse: false,
       genres: [
         'rock',
@@ -320,7 +319,7 @@ export default {
   },
   computed: {
     ...mapState(useModalStore, ['show']),
-    ...mapWritableState(useModalStore, ['album']),
+    ...mapWritableState(useModalStore, ['album', 'discogsId']),
     ...mapState(useLibraryStore, ['artists']),
 
     isEditing() {
@@ -345,7 +344,6 @@ export default {
     async fetchAlbum() {
       this.awaitingDiscogsResponse = true
       const album = await fetchRelease(this.discogsId)
-      console.log('Fetched album:', album)
       if (album) this.album = { ...this.album, ...album }
 
       this.awaitingDiscogsResponse = false
