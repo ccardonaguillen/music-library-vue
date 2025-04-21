@@ -134,7 +134,10 @@ export const useLibraryStore = defineStore('library', {
         this.albumCount++
 
         const currentArtistList = localStorage.getItem('artistList')?.split(';') ?? []
-        localStorage.setItem('artistList', [...currentArtistList, albumInfo.artist]).join(';')
+        if (!currentArtistList.includes(albumInfo.artist)) currentArtistList.push(albumInfo.artist)
+        localStorage.setItem('artistList', currentArtistList.join(';'))
+        
+        this.fetchArtistList()
 
         if (refresh) {
           await this.fetchLibrary()
@@ -173,7 +176,6 @@ export const useLibraryStore = defineStore('library', {
       const fileContent = e.target.result
       const collection = parseCollection(fileContent)
 
-      // console.log(collection)
       await Promise.all(collection.map((info) => this.addAlbum(info, false)))
       await this.fetchLibrary()
     }
