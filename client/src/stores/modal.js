@@ -30,7 +30,7 @@ export const useModalStore = defineStore('modal', {
   state: () => ({
     show: false,
     discogsId: null,
-    album: blankAlbum
+    album: {...blankAlbum}
   }),
 
   actions: {
@@ -39,7 +39,7 @@ export const useModalStore = defineStore('modal', {
     },
     closeModal() {
       this.show = false
-      this.album = blankAlbum
+      this.album = {...blankAlbum}
       this.discogsId = null
     }
   }
